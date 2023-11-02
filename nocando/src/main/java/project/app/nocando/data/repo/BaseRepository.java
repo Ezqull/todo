@@ -10,4 +10,6 @@ import java.util.List;
 
 public interface BaseRepository<T extends BaseEntity> extends JpaRepository<T, String> {
     List<T> findAll();
+
+    void deleteById(String id);
 }
