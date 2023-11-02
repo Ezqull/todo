@@ -1,0 +1,38 @@
+# Katalogi wygenerowane przez narzędzia budowania i IDE
+target/
+bin/
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Pliki konfiguracyjne Spring Boot
+application.properties
+application.yml
+
+# Pliki konfiguracyjne IDE
+/.project
+/.classpath
+/.settings/
+
+# Pliki do przechowywania stanu projektu Eclipse
+/.metadata/
+
+# Katalogi generowane przez narzędzia budowania Maven
+log/
+logs/
+*.log
+
+# Katalog generowany przez narzędzie budowania Gradle
+build/
+
+# Katalog generowany przez narzędzie budowania Apache Ant
+out/
+
+# Katalogi generowane przez narzędzia budowania IntelliJ IDEA
+out/
+gen/
+
+# Katalogi generowane przez narzędzia budowania NetBeans
+nbproject/private/
+build/
