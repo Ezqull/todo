@@ -35,6 +35,6 @@ public class TaskEntity extends BaseEntity{
 
     @ManyToOne(cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id",
-    referencedColumnName = "id")
+                referencedColumnName = "id")
     private UserAccountEntity user;
 }
