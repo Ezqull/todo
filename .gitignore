@@ -36,3 +36,5 @@ gen/
 # Katalogi generowane przez narzędzia budowania NetBeans
 nbproject/private/
 build/
+
+**/.DS_Store
