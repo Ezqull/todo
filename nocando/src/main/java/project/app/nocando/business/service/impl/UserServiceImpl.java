@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import project.app.nocando.business.exception.RequestWithIdException;
-import project.app.nocando.business.exception.UserNotFoundException;
-import project.app.nocando.business.payload.request.BaseRequest;
+import project.app.nocando.business.exception.EntityNotFoundException;
 import project.app.nocando.business.payload.request.UserRequest;
-import project.app.nocando.business.payload.response.BaseResponse;
 import project.app.nocando.business.payload.response.UserResponse;
 import project.app.nocando.business.service.UserService;
 import project.app.nocando.data.model.UserAccountEntity;
@@ -27,11 +25,7 @@ public class UserServiceImpl implements UserService {
     public UserResponse getById(String id) {
         Objects.requireNonNull(id);
 
-        try {
-            return userMapper.map(repo.findById(id), UserResponse.class);
-        } catch (UserNotFoundException e) {
-            throw new UserNotFoundException();
-        }
+        return userMapper.map(repo.findById(id).orElseThrow(EntityNotFoundException::new), UserResponse.class);
     }
 
     @Override
@@ -74,8 +68,8 @@ public class UserServiceImpl implements UserService {
         Objects.requireNonNull(id);
         try {
             repo.deleteById(id);
-        } catch (UserNotFoundException e){
-            throw new UserNotFoundException();
+        } catch (EntityNotFoundException e){
+            throw new EntityNotFoundException();
         }
     }
 }
