@@ -19,7 +19,6 @@ public class UserConfig {
         ModelMapper mapper = new ModelMapper();
 
         TypeMap<UserAccountEntity, UserResponse> entityToResponse = mapper.typeMap(UserAccountEntity.class, UserResponse.class);
-        entityToResponse.addMappings(map -> map.using(converter).map(UserAccountEntity::getTasks, UserResponse::setTasks));
 
         mapper.getConfiguration().setImplicitMappingEnabled(true);
 

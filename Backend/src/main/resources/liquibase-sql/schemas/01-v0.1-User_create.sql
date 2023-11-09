@@ -3,6 +3,6 @@
 
 create table user_account (
     id CHAR(36) primary key,
-    username varchar unique not null,
+    email varchar unique not null,
     password varchar not null
 );
