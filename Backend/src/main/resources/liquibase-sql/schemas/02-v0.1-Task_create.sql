@@ -6,9 +6,9 @@ create table task (
                       title varchar NOT NULL,
                       description varchar,
                       priority integer,
-                      is_exact_date boolean NOT NULL,
-                      is_done boolean NOT NULL,
+                      task_date date,
                       finish_date date,
+                      is_done boolean NOT NULL,
                       user_id CHAR(36),
                       FOREIGN KEY (user_id) REFERENCES user_account(id)
 );

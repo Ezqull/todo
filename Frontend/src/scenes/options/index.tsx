@@ -17,7 +17,7 @@ function Options() {
     "bg-primary-dark-500 rounded-xl text-primary-gray-100 p-2";
 
   const transition =
-    "transition ease-in focus:bg-primary-gray-100 focus:border-2 focus:border-primary-dark-500 focus:shadow-primary-gray-100 focus:outline-transparent focus:text-primary-dark-500";
+    "transition ease-in focus:bg-primary-gray-100 focus:border-2 focus:border-primary-dark-500 focus:shadow-primary-gray-100 focus:outline-none focus:text-primary-dark-500";
   const isAboveMediumScreens = useMediaQuery("(min-width:1060px)");
   const [title, setTitle] = useState("");
   const [isToday, setIsToday] = useState(false);
@@ -47,14 +47,14 @@ function Options() {
                   <label htmlFor="isToday">Today?</label>
                   {isToday ? (
                     <div
-                      className="w-8 h-8 bg-primary-dark-500 border-solid border rounded-md"
+                      className="w-8 h-8 bg-primary-dark-500 border-solid border-2 rounded-md"
                       onClick={() => setIsToday(!isToday)}
                     >
                       <CheckIcon className="text-primary-gray-100"></CheckIcon>
                     </div>
                   ) : (
                     <div
-                      className="w-8 h-8 border-solid border border-primary-dark-500 rounded-md"
+                      className="w-8 h-8 border-solid border-2 border-primary-dark-500 rounded-md"
                       onClick={() => setIsToday(!isToday)}
                     ></div>
                   )}
@@ -153,14 +153,14 @@ function Options() {
                     <label htmlFor="isToday">Today?</label>
                     {isToday ? (
                       <div
-                        className="w-8 h-8 bg-primary-dark-500 border-solid border rounded-md"
+                        className="w-8 h-8 bg-primary-dark-500 border-solid border-2 rounded-md"
                         onClick={() => setIsToday(!isToday)}
                       >
                         <CheckIcon className="text-primary-gray-100"></CheckIcon>
                       </div>
                     ) : (
                       <div
-                        className="w-8 h-8 border-solid border border-primary-dark-500 rounded-md"
+                        className="w-8 h-8 border-solid border-2 border-primary-dark-500 rounded-md"
                         onClick={() => setIsToday(!isToday)}
                       ></div>
                     )}

@@ -17,7 +17,7 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.5",
     "@mui/x-date-pickers": "^6.18.0",
     "dayjs": "^1.11.10",
-    "framer-motion": "^7.6.19",
+    "framer-motion": "^7.10.3",
     "react": "^18.2.0",
     "react-anchor-link-smooth-scroll": "^1.0.12",
     "react-dom": "^18.2.0",
