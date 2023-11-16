@@ -9,7 +9,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface TaskService extends BaseService<TaskRequest, TaskResponse>{
-    public List<TaskResponse> getAllByIsDoneAndFinishDateBetween(TaskPeriodRequest request);
+    public List<TaskResponse> getAllByIsDoneAndFinishDateBetween(TaskPeriodRequest request, String email);
     public List<TaskResponse> getAllByFinishDate(LocalDate finishDate);
-    public List<TaskResponse> getTodaysTasks();
+    public List<TaskResponse> getTodaysTasks(String email);
+    public List<TaskResponse> getAllArchived(String email);
 }

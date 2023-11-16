@@ -1,0 +1,144 @@
+import { BASE_URL, TaskPeriodRequest, TaskRequest } from "./types";
+import { getEmail } from "./user";
+
+const today = new Date();
+const nextWeek = new Date(today);
+nextWeek.setDate(today.getDate() + 7);
+const USER_EMAIL = getEmail();
+
+const formatDateToString = (date: Date) => {
+  const dd = String(date.getDate()).padStart(2, "0");
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const yyyy = date.getFullYear();
+
+  const formattedDate = dd + "-" + mm + "-" + yyyy;
+
+  return formattedDate;
+};
+
+const initialRequest: TaskPeriodRequest = {
+  isDone: false,
+  startDate: formatDateToString(today),
+  finishDate: formatDateToString(nextWeek),
+};
+
+export const createTask = async (jwtToken: string, task: TaskRequest) => {
+  try {
+    task.email = USER_EMAIL;
+
+    const response = await fetch(BASE_URL + "/task", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify(task),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    location.reload();
+    return data;
+  } catch (error) {
+    console.error("Wystąpił błąd podczas pobierania danych: ", error);
+  }
+};
+
+export const getTasksForTheWeek = async (jwtToken: string) => {
+  try {
+    const response = await fetch(BASE_URL + "/task/period/" + USER_EMAIL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify(initialRequest),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Wystąpił błąd podczas pobierania danych: ", error);
+  }
+};
+
+export const getTodaysTasks = async (jwtToken: string) => {
+  try {
+    const response = await fetch(BASE_URL + "/task/today/" + USER_EMAIL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Wystąpił błąd podczas pobierania danych: ", error);
+  }
+};
+
+export const getArchivedTasks = async (jwtToken: string) => {
+  try {
+    const response = await fetch(BASE_URL + "/task/archived/" + USER_EMAIL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    });
+
+    console.log(response);
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Wystąpił błąd podczas pobierania danych: ", error);
+  }
+};
+
+export const updateTask = async (
+  jwtToken: string,
+  request: TaskRequest,
+  id: string
+) => {
+  try {
+    const response = await fetch(BASE_URL + "/task/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify(request),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Wystąpił błąd podczas pobierania danych: ", error);
+  }
+};

@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TaskResponse } from "../../../shared/types";
-import { PencilIcon, ArchiveBoxIcon } from "@heroicons/react/24/solid";
+import {
+  PencilIcon,
+  ArchiveBoxIcon,
+  CheckIcon,
+} from "@heroicons/react/24/solid";
 import useMediaQuery from "../../../hooks/useMediaQuery";
+import React from "react";
 
 type Props = {
   task: TaskResponse;
@@ -11,6 +16,8 @@ const Task = ({ task }: Props) => {
   const [edit, setEdit] = useState(false);
   const [done, setDone] = useState(false);
   const [taskName, setTaskName] = useState(task.title);
+  const [priority, setPriority] = useState(task.priority);
+  const [finishDate, setFinishDate] = useState<Date>(task.finishDate);
   const isAboveSmallScreens = useMediaQuery("(min-width:768px)");
 
   return (
@@ -18,16 +25,20 @@ const Task = ({ task }: Props) => {
       {isAboveSmallScreens ? (
         <div>
           {!edit ? (
-            <div className="w-full h-[6%] flex flex-col gap-4 p-4 justify-start border-b-2 border-primary-dark-500">
+            <div
+              className={`w-full h-[6%] flex flex-col gap-4 p-4 justify-start border-b-2 border-primary-dark-500`}
+            >
               <div className="w-full">
                 <div className="flex flex-row justify-between h-[2rem] w-full">
                   <div className="flex flex-row items-center justify-start gap-8 w-full">
-                    <div>{taskName}</div>
+                    <div>{task.title}</div>
                     <div className="flex flex-row gap-3">
-                      {Array.from({ length: task.priority }, (_, i) => (
+                      {Array.from({ length: priority }, (_, i) => (
                         <div
                           key={i}
-                          className="h-1 w-5 rounded-md bg-primary-dark-500"
+                          className={`h-1 w-5 rounded-md ${
+                            !task.isLate ? "bg-primary-dark-500" : "bg-red-600"
+                          }`}
                         ></div>
                       ))}
                     </div>
@@ -60,9 +71,9 @@ const Task = ({ task }: Props) => {
                           id="title"
                           name="title"
                           value={taskName}
-                          onChange={(e: Event) => {
-                            const event = e.target as HTMLInputElement;
-                            setTaskName(event.value);
+                          onChange={(e) => {
+                            const event = e.target.value;
+                            setTaskName(event);
                           }}
                         />
                         <input
@@ -70,11 +81,15 @@ const Task = ({ task }: Props) => {
                           defaultValue={task.priority}
                           className="w-[10%] border bg-primary-gray-200 border-primary-dark-500 rounded-xl text-primary-dark-500 px-3 py-0.5 focus:outline-primary-dark-500 focus:outline-4"
                         />
-                        <input
-                          id="date"
-                          className="w-[25%] border bg-primary-gray-200 border-primary-dark-500 rounded-xl text-primary-dark-500 px-3 py-0.5  focus:outline-primary-dark-500 focus:outline-4"
-                          type="date"
-                        />
+                        <div className="w-[50%] ml-[2%] flex flex-row gap-2 justify-start items-center">
+                          <label htmlFor="date">Finish Date</label>
+                          <input
+                            id="date"
+                            className="w-[50%] border bg-primary-gray-200 border-primary-dark-500 rounded-xl text-primary-dark-500 px-3 py-0.5  focus:outline-primary-dark-500 focus:outline-4"
+                            type="date"
+                            value={finishDate}
+                          />
+                        </div>
                       </div>
                       <div className="flex flex-row gap-4 justify-center items-center">
                         <button type="submit" className="w-5 h-5">
@@ -123,7 +138,9 @@ const Task = ({ task }: Props) => {
                       {Array.from({ length: task.priority }, (_, i) => (
                         <div
                           key={i}
-                          className="h-3 w-3 rounded-full bg-primary-dark-500"
+                          className={`h-3 w-3 rounded-md ${
+                            !task.isLate ? "bg-primary-dark-500" : "bg-red-600"
+                          }`}
                         ></div>
                       ))}
                     </div>

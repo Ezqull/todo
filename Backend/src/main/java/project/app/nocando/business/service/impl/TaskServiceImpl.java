@@ -10,7 +10,9 @@ import project.app.nocando.business.payload.request.TaskRequest;
 import project.app.nocando.business.payload.response.TaskResponse;
 import project.app.nocando.business.service.TaskService;
 import project.app.nocando.data.model.TaskEntity;
+import project.app.nocando.data.model.UserAccountEntity;
 import project.app.nocando.data.repo.TaskRepository;
+import project.app.nocando.data.repo.UserRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.stream.Collectors;
 public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository repo;
+    private final UserRepository userRepository;
     private final ModelMapper taskMapper;
     @Override
     public TaskResponse getById(String id) {
@@ -38,10 +41,13 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponse> getAllByIsDoneAndFinishDateBetween(TaskPeriodRequest request) {
+    public List<TaskResponse> getAllByIsDoneAndFinishDateBetween(TaskPeriodRequest request, String email) {
         Objects.requireNonNull(request);
+        Objects.requireNonNull(email);
 
-        List<TaskEntity> entities = repo.getAllByIsDoneAndFinishDateBetween(request.getIsDone(), request.getStartDate(), request.getFinishDate());
+        UserAccountEntity user = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+
+        List<TaskEntity> entities = repo.getAllByIsDoneAndFinishDateBetweenAndUser(request.getIsDone(), request.getStartDate(), request.getFinishDate(), user);
 
         return entities.stream()
                 .map(entity -> taskMapper.map(entity, TaskResponse.class))
@@ -58,13 +64,29 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponse> getTodaysTasks() {
-        List<TaskEntity> entities = repo.getAllByTaskDate(LocalDate.now());
+    public List<TaskResponse> getTodaysTasks(String email) {
+        Objects.requireNonNull(email);
+
+        UserAccountEntity user = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+
+        List<TaskEntity> entities = repo.getAllByTaskDateAndUserAndIsDone(LocalDate.now(), user, false);
 
         return entities.stream()
                 .map(entity -> taskMapper.map(entity, TaskResponse.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<TaskResponse> getAllArchived(String email) {
+        Objects.requireNonNull(email);
+
+        UserAccountEntity user = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+
+        List<TaskEntity> entities = repo.getAllByIsDoneAndUser(true, user);
+
+        return entities.stream()
+                .map(entity -> taskMapper.map(entity, TaskResponse.class))
+                .collect(Collectors.toList());    }
 
     @Override
     public TaskResponse save(TaskRequest request) {
@@ -74,7 +96,9 @@ public class TaskServiceImpl implements TaskService {
             throw new RequestWithIdException();
         }
 
+        UserAccountEntity user = userRepository.findByEmail(request.getUserEmail()).orElseThrow(EntityNotFoundException::new);
         TaskEntity entity = taskMapper.map(request, TaskEntity.class);
+        entity.setUser(user);
 
         return taskMapper.map(repo.save(entity), TaskResponse.class);
     }

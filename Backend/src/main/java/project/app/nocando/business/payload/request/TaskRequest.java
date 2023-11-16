@@ -1,5 +1,6 @@
 package project.app.nocando.business.payload.request;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import lombok.Data;
@@ -18,5 +19,6 @@ public class TaskRequest extends BaseRequest {
     private LocalDate taskDate;
     @JsonFormat(pattern="dd-MM-yyyy")
     private LocalDate finishDate;
-    private String userId;
+    @JsonAlias("email")
+    private String userEmail;
 }
