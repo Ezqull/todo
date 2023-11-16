@@ -1,7 +1,9 @@
 INSERT INTO user_account (id, email, password) VALUES
-                                                ('c3fa8e02-03b0-4b0c-96ce-f68e3a6b2f2a', 'john_doe', 'password123'),
-                                                ('a8722d1a-08ae-4e47-bf23-df82a870c7c8', 'jane_smith', 'secure_password');
+                                                ('be6a551b-bbb1-4f9b-9833-9413caeba199', 'admin@a.a', '$2a$10$XqygxY0r59COpnQzEWDbA.fcZ45LGSMnnLMLWExZ83r/xGKvopcfC');
 
 INSERT INTO task (id, title, description, priority, task_date, finish_date, is_done, user_id) VALUES
-                                                ('9370a45d-7de7-4684-b6ab-89f4e9b16667', 'Buy groceries', 'Milk, eggs, and bread', 2,  NULL, NULL, true, 'c3fa8e02-03b0-4b0c-96ce-f68e3a6b2f2a'),
-                                                ('bc49c6ab-5e8d-4b0b-9b3f-21c0ecbba5ed', 'Finish project', 'Complete the report', 1,  NULL, NULL, false,  'a8722d1a-08ae-4e47-bf23-df82a870c7c8');
+('1a7c7acf-2ab7-4add-8717-c4b81ce32418','Task 1','Description for Task 1',1,'2023-11-15','2023-11-05',false,'be6a551b-bbb1-4f9b-9833-9413caeba199'),
+('f2b2d0cb-cc74-4eb5-a786-0a3e2616b1d1','Task 3','Description for Task 3',1,'2023-11-15','2023-11-07',true,'be6a551b-bbb1-4f9b-9833-9413caeba199'),
+('5eaf69cf-0682-495f-be52-fcdee38dcb82','Task 5','Description for Task 5',2,'2023-11-15','2023-11-30',true,'be6a551b-bbb1-4f9b-9833-9413caeba199'),
+('6e8b001d-6f99-4613-a324-f091f55988a5','Task 2','Description for Task 2',2,'2023-11-15','2023-11-30',false,'be6a551b-bbb1-4f9b-9833-9413caeba199'),
+('5fc062ea-e91a-4f97-9e9e-4bdf2b9094c9','Task 4','Description for Task 4',3,'2023-11-15','2023-11-30',false,'be6a551b-bbb1-4f9b-9833-9413caeba199');

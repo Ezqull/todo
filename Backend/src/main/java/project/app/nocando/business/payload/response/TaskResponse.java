@@ -9,7 +9,7 @@ public class TaskResponse extends BaseResponse{
     private String title;
     private String description;
     private Integer priority;
-    private Boolean isExactDate;
-    private Boolean isDone;
+    private LocalDate taskDate;
     private LocalDate finishDate;
+    private Boolean isDone;
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/user")
 public class UserController implements BaseController<UserRequest, UserResponse> {
 
@@ -35,9 +36,9 @@ public class UserController implements BaseController<UserRequest, UserResponse>
     }
 
     @Override
-    @PutMapping("/{id}")
-    public ResponseEntity<UserResponse> update(@PathVariable String id, @RequestBody UserRequest request) {
-        return ResponseEntity.ok(service.update(request, id));
+    @PutMapping("/{email}")
+    public ResponseEntity<UserResponse> update(@RequestBody UserRequest request, @PathVariable String email) {
+        return ResponseEntity.ok(service.update(request, email));
     }
 
     @Override

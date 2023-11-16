@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
+@CrossOrigin("http://localhost:5173")
 @RequestMapping("/task")
 public class TaskController implements BaseController<TaskRequest, TaskResponse> {
 
@@ -24,19 +25,19 @@ public class TaskController implements BaseController<TaskRequest, TaskResponse>
         return ResponseEntity.ok(service.getById(id));
     }
 
-    @GetMapping("/period")
-    public ResponseEntity<List<TaskResponse>> getAllByIsDoneAndFinishDateBetween(@RequestBody TaskPeriodRequest request){
-        return ResponseEntity.ok(service.getAllByIsDoneAndFinishDateBetween(request));
-    }
-
     @GetMapping("/finishDate")
     public ResponseEntity<List<TaskResponse>> getAllByFinishDate(@RequestBody LocalDate finishDate){
         return ResponseEntity.ok(service.getAllByFinishDate(finishDate));
     }
 
-    @GetMapping("/today")
-    public ResponseEntity<List<TaskResponse>> getTodaysTasks(){
-        return ResponseEntity.ok(service.getTodaysTasks());
+    @GetMapping("/today/{email}")
+    public ResponseEntity<List<TaskResponse>> getTodaysTasks(@PathVariable String email){
+        return ResponseEntity.ok(service.getTodaysTasks(email));
+    }
+
+    @GetMapping("/archived/{email}")
+    public ResponseEntity<List<TaskResponse>> getAllArchived(@PathVariable String email) {
+        return ResponseEntity.ok(service.getAllArchived(email));
     }
 
     @Override
@@ -51,10 +52,15 @@ public class TaskController implements BaseController<TaskRequest, TaskResponse>
         return ResponseEntity.ok(service.save(request));
     }
 
+    @PostMapping("/period/{email}")
+    public ResponseEntity<List<TaskResponse>> getAllByIsDoneAndFinishDateBetween(@RequestBody TaskPeriodRequest request, @PathVariable String email){
+        return ResponseEntity.ok(service.getAllByIsDoneAndFinishDateBetween(request, email));
+    }
+
     @Override
-    @PutMapping("/{id}")
-    public ResponseEntity<TaskResponse> update(@PathVariable String id, @RequestBody TaskRequest request) {
-        return ResponseEntity.ok(service.update(request, id));
+    @PutMapping("/{email}")
+    public ResponseEntity<TaskResponse> update(@RequestBody TaskRequest request, @PathVariable String email) {
+        return ResponseEntity.ok(service.update(request, email));
     }
 
     @Override

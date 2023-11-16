@@ -14,7 +14,7 @@ public interface BaseController<T extends BaseRequest, E extends BaseResponse> {
 
     public  ResponseEntity<E> add(T eto);
 
-    public ResponseEntity<E> update(String id, T eto);
+    public ResponseEntity<E> update(T eto, String email);
 
     public ResponseEntity<E> delete(String id);
 }
