@@ -9,8 +9,8 @@ import project.app.nocando.security.auth.response.AuthenticationResponse;
 import project.app.nocando.security.auth.service.AuthService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/auth")
+@CrossOrigin("http://localhost:5173")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthService service;
