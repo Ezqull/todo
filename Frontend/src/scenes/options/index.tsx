@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "../navbar/Link";
 import { SelectedPage, TaskRequest } from "../../shared/types";
 import { createTask } from "../../shared/tasks";
+import { motion } from "framer-motion";
 
 type Props = {
   selectedPage: SelectedPage;
@@ -20,12 +21,16 @@ function Options({ selectedPage, setSelectedPage }: Props) {
     "transition ease-in focus:bg-primary-gray-100 focus:border-2 focus:border-primary-dark-500 focus:shadow-primary-gray-100 focus:outline-none focus:text-primary-dark-500";
 
   const isAboveMediumScreens = useMediaQuery("(min-width:1060px)");
+  const isAboveSmallScreens = useMediaQuery("(min-width:768px)");
+
   const [title, setTitle] = useState("");
   const [isToday, setIsToday] = useState(false);
   const [priority, setPriority] = useState<number>(1);
-  const [taskDate, setTaskDate] = useState<Date>(new Date());
-  const [finishDate, setFinishDate] = useState<Date>(new Date());
+  const [taskDate, setTaskDate] = useState<Date>();
+  const [finishDate, setFinishDate] = useState<Date>();
   const jwtToken: string | null = localStorage.getItem("jwtToken");
+
+  const [isAdding, setIsAdding] = useState(false);
 
   const formatDateToString = (date: Date) => {
     const dd = String(date.getDate()).padStart(2, "0");
@@ -39,6 +44,9 @@ function Options({ selectedPage, setSelectedPage }: Props) {
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
+
+    setTaskDate(new Date());
+    setFinishDate(new Date());
 
     if (isToday) {
       const formattedDate = formatDateToString(new Date());
@@ -58,8 +66,8 @@ function Options({ selectedPage, setSelectedPage }: Props) {
         description: "",
         priority: priority,
         isDone: isToday,
-        taskDate: formatDateToString(taskDate),
-        finishDate: formatDateToString(finishDate),
+        taskDate: formatDateToString(taskDate as Date),
+        finishDate: formatDateToString(finishDate as Date),
         email: "",
       };
       createTask(jwtToken, task);
@@ -178,7 +186,7 @@ function Options({ selectedPage, setSelectedPage }: Props) {
             </div>
           </div>
         </div>
-      ) : (
+      ) : isAboveSmallScreens ? (
         <div className="h-full w-full bg-primary-gray-100 rounded-[2rem] py-2">
           <div className="h-full w-full flex flex-row gap-4">
             <form className="flex felx-row w-3/4">
@@ -293,12 +301,140 @@ function Options({ selectedPage, setSelectedPage }: Props) {
             </div>
           </div>
         </div>
+      ) : (
+        <motion.div
+          animate={{
+            y: isAdding ? -200 : 0,
+          }}
+          className={`${flexBetween} bg-primary-gray-100 shadow-sm shadow-primary-dark-500 fixed z-30 w-full h-[200%] z-1000 gap-4`}
+        >
+          <div className="w-full h-[3.5%]">
+            <div className="h-full w-full flex flex-row justify-center items-center">
+              <div className="flex flex-row w-[40%] h-full gap-4 justify-evenly items-center">
+                <button className="w-8 h-8 cursor-none flex justify-center items-center">
+                  <Link
+                    page="statistics"
+                    selectedPage={selectedPage}
+                    setSelectedPage={setSelectedPage}
+                  />
+                </button>
+                <button className="w-8 h-8 cursor-none">
+                  <Link
+                    page="archive"
+                    selectedPage={selectedPage}
+                    setSelectedPage={setSelectedPage}
+                  />
+                </button>
+              </div>
+              <div
+                className="w-[90px] h-[90px] rounded-full bg-primary-dark-500 text-primary-gray-100 border-2 border-primary-gray-100 translate-y-[-17.5%]"
+                onClick={(e) => {
+                  if (
+                    isAdding &&
+                    title &&
+                    priority &&
+                    (isToday || (taskDate && finishDate))
+                  ) {
+                    console.log(isAdding);
+                    handleSubmit(e);
+                  }
+                  setTitle("");
+                  setIsAdding(!isAdding);
+                }}
+              >
+                <PlusIcon />
+              </div>
+
+              <div className="flex flex-row w-[40%] h-full gap-4 justify-evenly items-center">
+                <button className="w-8 h-8 cursor-none">
+                  <Link
+                    page="calendar"
+                    selectedPage={selectedPage}
+                    setSelectedPage={setSelectedPage}
+                  />
+                </button>
+                <button className="w-8 h-8 cursor-none">
+                  <Link
+                    page="home"
+                    selectedPage={selectedPage}
+                    setSelectedPage={setSelectedPage}
+                  />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div className="w-full h-full">
+            <form className="flex flex-col w-full">
+              <div className="flex flex-col items-center justify-between gap-6 w-full">
+                <div className="w-full h-1/2 flex flex-row justify-evenly">
+                  <div className="flex flex-col w-1/2 px-4">
+                    <label htmlFor="title">Title</label>
+                    <input
+                      className={`${inputStyleMed} ${transition}`}
+                      id="title"
+                      type="text"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                    />
+                  </div>
+                  <div className="flex flex-row justify-between w-1/2 px-4 pr-5">
+                    <div>
+                      <label htmlFor="prio">Priority</label>
+                      <input
+                        className={`${inputStyleBig} ${transition}`}
+                        type="number"
+                        name="prio"
+                        id="prio"
+                        min={1}
+                        max={10}
+                        defaultValue={1}
+                      />
+                    </div>
+                    <div className="flex flex-col items-center justify-between w-1/5">
+                      <label htmlFor="isToday">Today?</label>
+                      {isToday ? (
+                        <div
+                          className="w-11 h-11 bg-primary-dark-500 border-solid border-2 rounded-xl"
+                          onClick={() => setIsToday(!isToday)}
+                        >
+                          <CheckIcon className="text-primary-gray-100"></CheckIcon>
+                        </div>
+                      ) : (
+                        <div
+                          className="w-11 h-11 border-solid border-2 border-primary-dark-500 rounded-xl"
+                          onClick={() => setIsToday(!isToday)}
+                        ></div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <div className="w-full h-1/2 flex flex-row justify-evenly">
+                  <div className="flex flex-col w-1/2 px-4">
+                    <label htmlFor="date">Task Date</label>
+                    <input
+                      id="date"
+                      className={`${inputStyleBig} ${transition}`}
+                      type="date"
+                      disabled={isToday}
+                    />
+                  </div>
+                  <div className="flex flex-col w-1/2 px-4">
+                    <label htmlFor="date">Finish Date</label>
+                    <input
+                      id="date"
+                      className={`${inputStyleBig} ${transition}`}
+                      type="date"
+                      disabled={isToday}
+                    />
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </motion.div>
       )}
     </>
   );
 }
 
 export default Options;
-function formatDateToString(arg0: Date) {
-  throw new Error("Function not implemented.");
-}

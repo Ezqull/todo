@@ -6,7 +6,6 @@ import {
   CheckIcon,
 } from "@heroicons/react/24/solid";
 import useMediaQuery from "../../../hooks/useMediaQuery";
-import React from "react";
 
 type Props = {
   task: TaskResponse;

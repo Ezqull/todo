@@ -47,9 +47,40 @@ export const createTask = async (jwtToken: string, task: TaskRequest) => {
   }
 };
 
+// export const setTaskDone = async(jwtToken: string, task: TaskRequest) => {
+//   try {
+//     task.email = USER_EMAIL;
+
+//     const response = await fetch(BASE_URL + "")
+//   }
+// }
+
 export const getTasksForTheWeek = async (jwtToken: string) => {
   try {
     const response = await fetch(BASE_URL + "/task/period/" + USER_EMAIL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify(initialRequest),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP Error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Wystąpił błąd podczas pobierania danych: ", error);
+  }
+};
+
+export const getTasksFinishDatesForTheWeek = async (jwtToken: string) => {
+  try {
+    const response = await fetch(BASE_URL + "/task/finish/" + USER_EMAIL, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -101,8 +132,6 @@ export const getArchivedTasks = async (jwtToken: string) => {
         Authorization: `Bearer ${jwtToken}`,
       },
     });
-
-    console.log(response);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

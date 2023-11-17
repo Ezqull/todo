@@ -35,6 +35,7 @@ export interface TaskResponse extends BaseRequest {
   finishDate: Date;
   isDone: boolean;
   isLate: boolean;
+  isFinishDay?: boolean;
 }
 
 export interface UserResponse {
