@@ -35,18 +35,16 @@ function App() {
 
   return (
     <div className="h-full w-full">
-      {isAboveSmallScreens && (
-        <motion.div
-          className="cursor"
-          style={{
-            translateX: cursorX,
-            translateY: cursorY,
-          }}
-          transition={{
-            duration: 0.1,
-          }}
-        ></motion.div>
-      )}
+      <motion.div
+        className="cursor"
+        style={{
+          translateX: cursorX,
+          translateY: cursorY,
+        }}
+        transition={{
+          duration: 0.1,
+        }}
+      ></motion.div>
       {isLoggedIn ? (
         <div className="app bg-primary-dark-500">
           <Navbar
@@ -97,9 +95,9 @@ function App() {
             </div>
           ) : (
             <div
-              className={`flex items-center justify-center fixed top-[10%] w-full h-[90%]`}
+              className={`flex flex-col gap-10 items-center justify-center fixed top-[9%] w-full h-[90%] pt-4`}
             >
-              <div className="h-4/5 w-5/6 flex flex-col-reverse justify-between gap-12">
+              <div className="h-[85%] w-5/6 flex flex-col-reverse justify-between gap-12 mt-5">
                 {selectedPage === "home" ? (
                   <Board />
                 ) : selectedPage === "calendar" ? (
@@ -109,6 +107,12 @@ function App() {
                 ) : (
                   selectedPage === "statistics" && <div></div>
                 )}
+              </div>
+              <div className="h-[7.5%] w-full">
+                <Options
+                  selectedPage={selectedPage}
+                  setSelectedPage={setSelectedPage}
+                />
               </div>
             </div>
           )}

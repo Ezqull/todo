@@ -1,5 +1,6 @@
 package project.app.nocando.business.service.impl;
 
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 @AllArgsConstructor
 public class TaskServiceImpl implements TaskService {
 
@@ -41,7 +43,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponse> getAllByIsDoneAndFinishDateBetween(TaskPeriodRequest request, String email) {
+    public List<TaskResponse> getTaskDatePeriod(TaskPeriodRequest request, String email) {
+        Objects.requireNonNull(request);
+        Objects.requireNonNull(email);
+
+        UserAccountEntity user = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+
+        List<TaskEntity> entities = repo.getAllByIsDoneAndTaskDateBetweenAndUser(request.getIsDone(), request.getStartDate(), request.getFinishDate(), user);
+
+        return entities.stream()
+                .map(entity -> taskMapper.map(entity, TaskResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskResponse> getFinishDatePeriod(TaskPeriodRequest request, String email) {
         Objects.requireNonNull(request);
         Objects.requireNonNull(email);
 
@@ -87,6 +103,16 @@ public class TaskServiceImpl implements TaskService {
         return entities.stream()
                 .map(entity -> taskMapper.map(entity, TaskResponse.class))
                 .collect(Collectors.toList());    }
+
+    @Override
+    public TaskResponse finishTask(String id) {
+        Objects.requireNonNull(id);
+
+        TaskEntity entity = repo.findById(id).orElseThrow(EntityNotFoundException::new);
+        entity.setIsDone(true);
+
+        return taskMapper.map(entity, TaskResponse.class);
+    }
 
     @Override
     public TaskResponse save(TaskRequest request) {

@@ -34,7 +34,6 @@ const Board = ({}: Props) => {
             (a, b) => b.priority - a.priority
           );
           setTasks(sortedTasks);
-          console.log(sortedTasks);
         }
       } catch (error) {
         console.error("Wystąpił błąd podczas pobierania danych: ", error);
@@ -51,7 +50,7 @@ const Board = ({}: Props) => {
       {isAboveMediumScreens ? (
         <div className="w-[70%] h-full bg-primary-gray-100 rounded-[2rem] p-6">
           <span className="font-bold uppercase text-xl">Tasks For The Day</span>
-          <div className="h-[90%] w-full   overflow-scroll">
+          <div className="h-[90%] w-full overflow-scroll">
             {tasks.map((task) => (
               <Task key={task.title} task={task} />
             ))}
@@ -69,7 +68,7 @@ const Board = ({}: Props) => {
       ) : (
         <div className="h-full w-full bg-primary-gray-100 rounded-[2rem] p-6 overflow-scroll no-scrollbar">
           <span className="font-bold uppercase text-xl">Tasks For The Day</span>
-          <div className=" overflow-scroll">
+          <div className="overflow-scroll">
             {tasks.map((task) => (
               <Task key={task.title} task={task} />
             ))}

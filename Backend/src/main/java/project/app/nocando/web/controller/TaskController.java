@@ -53,14 +53,24 @@ public class TaskController implements BaseController<TaskRequest, TaskResponse>
     }
 
     @PostMapping("/period/{email}")
-    public ResponseEntity<List<TaskResponse>> getAllByIsDoneAndFinishDateBetween(@RequestBody TaskPeriodRequest request, @PathVariable String email){
-        return ResponseEntity.ok(service.getAllByIsDoneAndFinishDateBetween(request, email));
+    public ResponseEntity<List<TaskResponse>> getTaskDatePeriod(@RequestBody TaskPeriodRequest request, @PathVariable String email){
+        return ResponseEntity.ok(service.getTaskDatePeriod(request, email));
+    }
+
+    @PostMapping("/finish/{email}")
+    public ResponseEntity<List<TaskResponse>> getFinishDatePeriod(@RequestBody TaskPeriodRequest request, @PathVariable String email){
+        return ResponseEntity.ok(service.getFinishDatePeriod(request, email));
     }
 
     @Override
     @PutMapping("/{email}")
     public ResponseEntity<TaskResponse> update(@RequestBody TaskRequest request, @PathVariable String email) {
         return ResponseEntity.ok(service.update(request, email));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskResponse> finishTask(@PathVariable String id) {
+        return ResponseEntity.ok(service.finishTask(id));
     }
 
     @Override
