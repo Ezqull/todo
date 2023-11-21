@@ -24,14 +24,12 @@ public class CustomTaskScheduler {
     private TaskService service;
     private final EmailService emailService;
 
-//    @Scheduled(cron = "0 0 0 * * ?", zone = "Europe/Warsaw")
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(cron = "0 0 0 * * ?", zone = "Europe/Warsaw")
     public void performTaskAtMidnight() {
         service.updateTaskDateForIncompleteTasks();
     }
 
-//    @Scheduled(fixedDelay = 10000)
-//    @Scheduled(cron = "0 0 9 * * *", zone = "Europe/Warsaw")
+   @Scheduled(cron = "0 0 9 * * *", zone = "Europe/Warsaw")
     public void sendReminderForUnfinishedTasks() {
         LocalDate today = LocalDate.now();
         List<TaskEmailResponse> tasks = service.dateCheckForEmail(today);
