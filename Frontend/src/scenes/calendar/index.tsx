@@ -48,7 +48,7 @@ function Calendar() {
   return (
     <>
       {isAboveMediumScreens ? (
-        <div className="w-[70%] h-full bg-primary-gray-100 rounded-[2rem] p-6 flex flex-col gap-8">
+        <div className="w-[70%] h-full bg-primary-gray-100 rounded-[2rem] px-6 pt-6 flex flex-col gap-8">
           <span className="font-bold uppercase text-xl">Calendar View</span>
           <div className="flex items-start justify-center h-full">
             <div className="h-full w-full overflow-x-scroll flex flex-row justify-start gap-5">

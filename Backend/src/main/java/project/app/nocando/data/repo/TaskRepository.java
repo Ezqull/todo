@@ -9,6 +9,7 @@ import project.app.nocando.data.model.UserAccountEntity;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface TaskRepository extends BaseRepository<TaskEntity> {
@@ -17,8 +18,11 @@ public interface TaskRepository extends BaseRepository<TaskEntity> {
     List<TaskEntity> getAllByFinishDate(LocalDate finishDate);
     List<TaskEntity> getAllByTaskDateAndUserAndIsDone(LocalDate taskDate, UserAccountEntity user, Boolean isDone);
     List<TaskEntity> getAllByIsDoneAndUser(Boolean isDone, UserAccountEntity user);
+    List<TaskEntity> findByFinishDateLessThanEqualAndIsDoneFalse(LocalDate date);
+    List<TaskEntity> findAllByTaskDateAndUser(LocalDate taskDate, UserAccountEntity user);
+
     @Modifying
-    @Query("UPDATE TaskEntity t SET t.taskDate = :newDate WHERE t.taskDate <= t.finishDate AND t.isDone = false AND t.taskDate < :currentDate")
-    void updateTaskDateForIncompleteTasks(LocalDate newDate, LocalDate currentDate);
+    @Query("UPDATE TaskEntity t SET t.taskDate = :currentDate WHERE t.taskDate <= t.finishDate AND t.isDone = false AND t.taskDate < :currentDate")
+    void updateTaskDateForIncompleteTasks(LocalDate currentDate);
 
 }

@@ -8,6 +8,7 @@ import Auth from "./scenes/auth";
 import { motion, useMotionValue } from "framer-motion";
 import Calendar from "./scenes/calendar";
 import Archive from "./scenes/archive";
+import Statistics from "./scenes/statistics";
 
 function App() {
   const isAboveMediumScreens = useMediaQuery("(min-width:1060px)");
@@ -31,7 +32,7 @@ function App() {
     return () => {
       window.removeEventListener("mousemove", moveCursor);
     };
-  }, []);
+  }, [cursorX, cursorY]);
 
   return (
     <div className="h-full w-full">
@@ -63,7 +64,7 @@ function App() {
                 ) : selectedPage === "archive" ? (
                   <Archive />
                 ) : (
-                  selectedPage === "statistics" && <div></div>
+                  selectedPage === "statistics" && <Statistics />
                 )}
                 <Options
                   selectedPage={selectedPage}
@@ -83,7 +84,7 @@ function App() {
                 ) : selectedPage === "archive" ? (
                   <Archive />
                 ) : (
-                  selectedPage === "statistics" && <div></div>
+                  selectedPage === "statistics" && <Statistics />
                 )}
                 <div className="h-[20%]">
                   <Options
@@ -105,7 +106,7 @@ function App() {
                 ) : selectedPage === "archive" ? (
                   <Archive />
                 ) : (
-                  selectedPage === "statistics" && <div></div>
+                  selectedPage === "statistics" && <Statistics />
                 )}
               </div>
               <div className="h-[7.5%] w-full">

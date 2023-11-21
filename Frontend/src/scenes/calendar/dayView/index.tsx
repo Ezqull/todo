@@ -33,7 +33,7 @@ function DayView({ tasksForTheDay, day }: Props) {
   return (
     <>
       {isAboveMediumScreens ? (
-        <div className="h-[90%] flex flex-col gap-6">
+        <div className="h-[95%] flex flex-col gap-6">
           <div className="w-full h-12 rounded-xl bg-primary-gray-200 px-6 flex items-center justify-center flex-shrink-0">
             <span className="drop-shadow-md shadow-primary-dark-500">
               {day.toLocaleDateString()}
@@ -60,20 +60,31 @@ function DayView({ tasksForTheDay, day }: Props) {
         </div>
       ) : (
         <motion.div
+          initial={false}
           animate={{
-            height: expand && tasks.length > 2 ? "100%" : "14.5rem",
+            height: expand
+              ? "100%"
+              : tasks.length > 2
+              ? "14.5rem"
+              : tasks.length == 0
+              ? "8rem"
+              : "12rem",
           }}
-          className="h-[10rem] w-full flex flex-col items-center gap-6 bg-primary-dark-100 shadow-xl rounded-xl p-6"
+          className="w-full flex flex-col items-center gap-6 bg-primary-dark-100 shadow-xl rounded-xl p-6 flex-grow-0"
         >
-          <div className="w-[40%] h-[40px] rounded-full bg-primary-gray-200 flex items-center justify-center">
+          <div className="w-[40%] rounded-full bg-primary-gray-200 flex items-center justify-center">
             <span className="drop-shadow-md shadow-primary-dark-500 self-center">
               {day.toLocaleDateString()}
             </span>
           </div>
           <div className="flex flex-row flex-wrap items-start justify-start gap-x-[10%] gap-y-[5px] h-[100%] w-full overflow-y-hidden">
-            {tasks.map((task: TaskResponse) => (
-              <DayTask task={task} />
-            ))}
+            {tasks.length != 0 ? (
+              tasks.map((task: TaskResponse) => <DayTask task={task} />)
+            ) : (
+              <div className="w-full uppercase text-xl flex justify-center items-center">
+                <span>No tasks for the day :D</span>
+              </div>
+            )}
           </div>
           {tasks.length > 2 && (
             <div

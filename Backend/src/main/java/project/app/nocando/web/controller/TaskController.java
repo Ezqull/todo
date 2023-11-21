@@ -35,6 +35,11 @@ public class TaskController implements BaseController<TaskRequest, TaskResponse>
         return ResponseEntity.ok(service.getTodaysTasks(email));
     }
 
+    @GetMapping("/today/all/{email}")
+    public ResponseEntity<List<TaskResponse>> getAllTasksForToday(@PathVariable String email){
+        return ResponseEntity.ok(service.getAllTasksForToday(email));
+    }
+
     @GetMapping("/archived/{email}")
     public ResponseEntity<List<TaskResponse>> getAllArchived(@PathVariable String email) {
         return ResponseEntity.ok(service.getAllArchived(email));
@@ -63,12 +68,13 @@ public class TaskController implements BaseController<TaskRequest, TaskResponse>
     }
 
     @Override
-    @PutMapping("/{email}")
-    public ResponseEntity<TaskResponse> update(@RequestBody TaskRequest request, @PathVariable String email) {
-        return ResponseEntity.ok(service.update(request, email));
+    @PatchMapping("/{id}")
+    public ResponseEntity<TaskResponse> update(@RequestBody TaskRequest request, @PathVariable String id) {
+        System.out.println(request);
+        return ResponseEntity.ok(service.update(request, id));
     }
 
-    @PutMapping("/{id}")
+    @PatchMapping("/archive/{id}")
     public ResponseEntity<TaskResponse> finishTask(@PathVariable String id) {
         return ResponseEntity.ok(service.finishTask(id));
     }

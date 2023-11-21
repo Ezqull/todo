@@ -1,17 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import useMediaQuery from "../../hooks/useMediaQuery";
-import { auth } from "../../shared/auth";
-import React from "react";
+import { signIn, signUp } from "../../shared/auth";
 
-type Props = {};
-
-const Auth = (props: Props) => {
+const Auth = () => {
   const [isSignIn, setIsSignIn] = useState(true);
-  const [text, setText] = useState(false);
+  const text: string = "Log in";
 
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+
+  const [emailError, setEmailError] = useState("");
+  const [passError, setPassError] = useState("");
+
+  const [triggerEmailShake, setTriggerEmailShake] = useState(false);
+  const [triggerPassShake, setTriggerPassShake] = useState(false);
+
+  const divStyle = isSignIn
+    ? "bg-primary-gray-100 text-primary-dark-500"
+    : "bg-primary-dark-500 text-primary-gray-100";
 
   const input =
     "border-2 border-primary-dark-500 transition ease-in focus:bg-primary-dark-500 focus:border-2 focus:border-primary-gray-100 focus:shadow-primary-gray-100 focus:outline-none focus:text-primary-gray-100";
@@ -26,10 +33,52 @@ const Auth = (props: Props) => {
     visible: { opacity: 1, x: 0 },
   };
 
+  const shakeAnimation = {
+    shake: {
+      x: [0, -10, 10, -10, 10, 0],
+      transition: { type: "tween", duration: 0.5 },
+    },
+  };
+
+  const resetInputs = () => {
+    setEmail("");
+    setPass("");
+    setIsSignIn(!isSignIn);
+  };
+
+  const validateEmail = (email: string) => {
+    if (!email.includes("@") && !isSignIn) {
+      setEmailError("Nieprawidłowy adres email.");
+      setTriggerEmailShake(true);
+      return false;
+    }
+    setEmailError("");
+    return true;
+  };
+
+  const validatePassword = (password: string) => {
+    if (password.length < 6 && !isSignIn) {
+      setPassError("Hasło musi mieć co najmniej 6 znaków.");
+      setTriggerPassShake(true);
+      return false;
+    }
+    setPassError("");
+    return true;
+  };
+
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
 
-    auth(isSignIn, { email, password: pass });
+    const isEmailValid = validateEmail(email);
+    const isPasswordValid = validatePassword(pass);
+
+    if (isEmailValid && isPasswordValid && !isSignIn) {
+      signUp({ email, password: pass });
+    }
+
+    if (isSignIn) {
+      signIn({ email, password: pass });
+    }
   };
 
   return (
@@ -40,6 +89,23 @@ const Auth = (props: Props) => {
       }}
       className=" h-full w-full flex flex-col justify-center items-center gap-4"
     >
+      <div
+        className={`${
+          isSignIn ? "w-[144.5px]" : "w-[133.5px]"
+        } h-[25px] overflow-hidden relative`}
+      >
+        <motion.div
+          animate={{ x: !isSignIn ? 0 : 0 }}
+          initial={{ x: "-50.5%" }}
+          transition={{ repeat: Infinity, duration: 4, ease: "linear" }}
+          className={`${divStyle} ${
+            isSignIn ? "w-[289px]" : "w-[267px]"
+          } absolute`}
+        >
+          Click here to {!isSignIn ? "Log In" : "Sign Up"} Click here to{" "}
+          {!isSignIn ? "Log In" : "Sign Up"}
+        </motion.div>
+      </div>
       <div
         className={`overflow-hidden relative ${
           isAboveMediumScreens
@@ -53,7 +119,7 @@ const Auth = (props: Props) => {
           initial={{ x: "-150%" }}
           animate={{ x: isSignIn ? 0 : "-150%" }}
           transition={{ duration: 0.75, ease: "easeInOut" }}
-          onClick={() => setIsSignIn(!isSignIn)}
+          onClick={() => resetInputs()}
           className="absolute text-primary-gray-100 text-5xl"
         >
           Log In
@@ -62,7 +128,7 @@ const Auth = (props: Props) => {
           initial={{ x: 0 }}
           animate={{ x: isSignIn ? "150%" : 0 }}
           transition={{ duration: 0.75, ease: "easeInOut" }}
-          onClick={() => setIsSignIn(!isSignIn)}
+          onClick={() => resetInputs()}
           className="absolute text-primary-dark-500 text-5xl"
         >
           Sign Up
@@ -73,7 +139,12 @@ const Auth = (props: Props) => {
         className="flex flex-col gap-8 w-[20rem] mt-8"
         onSubmit={handleSubmit}
       >
-        <div className="flex items-center justify-center">
+        <motion.div
+          className="w-full flex items-center justify-center"
+          animate={triggerEmailShake ? "shake" : ""}
+          variants={shakeAnimation}
+          onAnimationComplete={() => setTriggerEmailShake(false)}
+        >
           <motion.input
             animate={{
               width: "100%",
@@ -86,16 +157,26 @@ const Auth = (props: Props) => {
               width: 0,
               size: 0,
             }}
+            value={email}
             transition={{ duration: 0.75, ease: "easeInOut" }}
             autoComplete="off"
             onChange={(e) => setEmail(e.target.value)}
-            required
             type="email"
             placeholder="E-mail"
             className={`${input} rounded-full py-1 px-4 w-full`}
           />
-        </div>
-        <div className="flex items-center justify-center">
+        </motion.div>
+        {emailError && !isSignIn && (
+          <p className="absolute left-[50%] top-[53%] translate-x-[-50%] text-primary-dark-500 z-5000">
+            {emailError}
+          </p>
+        )}
+        <motion.div
+          className="w-full flex items-center justify-center"
+          animate={triggerPassShake ? "shake" : ""}
+          variants={shakeAnimation}
+          onAnimationComplete={() => setTriggerPassShake(false)}
+        >
           <motion.input
             animate={{
               width: "100%",
@@ -110,13 +191,18 @@ const Auth = (props: Props) => {
             }}
             transition={{ duration: 0.75, ease: "easeInOut" }}
             value={pass}
-            required
             onChange={(e) => setPass(e.target.value)}
             placeholder="Password"
             type="password"
             className={`${input} rounded-full py-1 px-4`}
           />
-        </div>
+        </motion.div>
+        {passError && !isSignIn && (
+          <p className="absolute left-[50%] top-[60.5%] translate-x-[-50%] text-primary-dark-500 z-5000">
+            {passError}
+          </p>
+        )}
+
         <div className="flex justify-center">
           <motion.button
             animate={{
