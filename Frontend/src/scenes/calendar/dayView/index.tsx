@@ -68,7 +68,7 @@ function DayView({ tasksForTheDay, day }: Props) {
               ? "15.5rem"
               : tasks.length == 0
               ? "8rem"
-              : "13rem",
+              : "13rem",]
           }}
           className="w-full flex flex-col items-center gap-6 bg-primary-dark-100 shadow-xl rounded-xl p-6 flex-grow-0"
         >

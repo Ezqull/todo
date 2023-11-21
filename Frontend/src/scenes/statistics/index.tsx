@@ -84,6 +84,7 @@ function Statistics({}: Props) {
               }}
               startAngle={0}
               endAngle={360}
+        
             />
             <V.VictoryAnimation duration={1000} data={{ percent: data[0]?.y }}>
               {(newProps) => {
