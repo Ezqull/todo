@@ -5,7 +5,6 @@ import {
   ListBulletIcon,
 } from "@heroicons/react/24/solid";
 import { SelectedPage } from "../../shared/types";
-import React from "react";
 
 type Props = {
   page: string;

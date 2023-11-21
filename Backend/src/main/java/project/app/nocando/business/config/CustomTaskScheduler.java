@@ -28,7 +28,6 @@ public class CustomTaskScheduler {
     public void performTaskAtMidnight() {
         service.updateTaskDateForIncompleteTasks();
     }
-
    @Scheduled(cron = "0 0 9 * * *", zone = "Europe/Warsaw")
     public void sendReminderForUnfinishedTasks() {
         LocalDate today = LocalDate.now();
