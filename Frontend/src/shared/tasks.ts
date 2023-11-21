@@ -68,6 +68,33 @@ export const setTaskDone = async (jwtToken: string, id: string) => {
   }
 };
 
+export const setTasksUndone = async (
+  jwtToken: string,
+  tasks: TaskRequest[]
+) => {
+  // console.log(tasks);
+
+  try {
+    const response = await fetch(BASE_URL + "/task/unarchive", {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+      body: JSON.stringify(tasks),
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP Error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    location.reload();
+    return data;
+  } catch (error) {
+    console.error("Wystąpił błąd podczas pobierania danych: ", error);
+  }
+};
+
 export const getTasksForTheWeek = async (jwtToken: string) => {
   try {
     const response = await fetch(BASE_URL + "/task/period/" + USER_EMAIL, {

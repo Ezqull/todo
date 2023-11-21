@@ -18,8 +18,8 @@ function DayTask({ task }: Props) {
           className={`h-[100px] ${taskStyle} rounded-xl py-2 my-1 shadow-md flex-shrink-0`}
         >
           <div className="h-full flex flex-col justify-evenly items-center">
-            <span className="text-center">{task.title}</span>
-            <div>Priority: {task.priority}</div>
+            <span className="text-center h-8 leading-4">{task.title}</span>
+            <div className="text-center h-8">Priority: {task.priority}</div>
           </div>
         </div>
       ) : isAboveSmallScreens ? (
@@ -27,17 +27,17 @@ function DayTask({ task }: Props) {
           className={`h-[85%] w-[125px] ${taskStyle} rounded-xl py-2 my-1 shadow-md mb-2 flex-shrink-0`}
         >
           <div className="h-full flex flex-col justify-evenly items-center">
-            <span className="text-center">{task.title}</span>
-            <div>Priority: {task.priority}</div>
+            <span className="text-center h-8 leading-4">{task.title}</span>
+            <div className="text-center h-8">Priority: {task.priority}</div>
           </div>
         </div>
       ) : (
         <div
-          className={`h-[5rem] w-[45%] ${taskStyle} rounded-xl py-2 my-1 shadow-md`}
+          className={`h-[6rem] w-[45%] ${taskStyle} rounded-xl py-2 my-1 shadow-md`}
         >
-          <div className="flex flex-col justify-center items-center">
-            <span>{task.title}</span>
-            <div>Priority: {task.priority}</div>
+          <div className="h-full flex flex-col justify-evenly items-center">
+            <span className="text-center h-8 leading-4">{task.title}</span>
+            <div className="text-center h-8">Priority: {task.priority}</div>
           </div>
         </div>
       )}

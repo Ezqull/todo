@@ -18,6 +18,7 @@ public interface TaskService extends BaseService<TaskRequest, TaskResponse>{
     public List<TaskResponse> getAllArchived(String email);
     public List<TaskResponse> getAllTasksForToday(String email);
     public TaskResponse finishTask(String id);
+    public List<TaskResponse> unarchiveTasks(List<TaskRequest> request);
     public void updateTaskDateForIncompleteTasks();
     List<TaskEmailResponse> dateCheckForEmail(LocalDate date);
 

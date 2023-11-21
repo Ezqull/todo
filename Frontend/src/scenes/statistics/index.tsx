@@ -51,6 +51,22 @@ function Statistics({}: Props) {
           <svg viewBox="0 0 400 400" width="100%" height="100%">
             <V.VictoryPie
               standalone={false}
+              width={400}
+              height={400}
+              data={[{ x: "gray", y: 100 }]} // Statyczne dane dla 100% wypełnienia
+              innerRadius={120}
+              cornerRadius={25}
+              labels={() => null}
+              style={{
+                data: {
+                  fill: () => "#E8E8E8",
+                },
+              }}
+              startAngle={0}
+              endAngle={360}
+            />
+            <V.VictoryPie
+              standalone={false}
               animate={{ duration: 1000 }}
               width={400}
               height={400}
@@ -67,6 +83,7 @@ function Statistics({}: Props) {
                 },
               }}
               startAngle={0}
+              endAngle={360}
             />
             <V.VictoryAnimation duration={1000} data={{ percent: data[0]?.y }}>
               {(newProps) => {
@@ -93,6 +110,22 @@ function Statistics({}: Props) {
           <svg viewBox="0 0 400 400" width="100%" height="100%">
             <V.VictoryPie
               standalone={false}
+              width={400}
+              height={400}
+              data={[{ x: "gray", y: 100 }]} // Statyczne dane dla 100% wypełnienia
+              innerRadius={120}
+              cornerRadius={25}
+              labels={() => null}
+              style={{
+                data: {
+                  fill: () => "#E8E8E8",
+                },
+              }}
+              startAngle={0}
+              endAngle={360}
+            />
+            <V.VictoryPie
+              standalone={false}
               animate={{ duration: 1000 }}
               width={400}
               height={400}
@@ -109,6 +142,7 @@ function Statistics({}: Props) {
                 },
               }}
               startAngle={0}
+              endAngle={360}
             />
             <V.VictoryAnimation duration={1000} data={{ percent: data[0]?.y }}>
               {(newProps) => {
@@ -133,6 +167,22 @@ function Statistics({}: Props) {
           </span>
 
           <svg viewBox="0 0 400 400" width="100%" height="90%">
+            <V.VictoryPie
+              standalone={false}
+              width={400}
+              height={400}
+              data={[{ x: "gray", y: 100 }]} // Statyczne dane dla 100% wypełnienia
+              innerRadius={120}
+              cornerRadius={25}
+              labels={() => null}
+              style={{
+                data: {
+                  fill: () => "#E8E8E8",
+                },
+              }}
+              startAngle={0}
+              endAngle={360}
+            />
             <V.VictoryPie
               standalone={false}
               animate={{ duration: 1000 }}

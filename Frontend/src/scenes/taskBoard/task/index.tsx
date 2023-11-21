@@ -71,7 +71,7 @@ const Task = ({ task }: Props) => {
               <div className="w-full">
                 <div className="flex flex-row justify-between h-[2rem] w-full">
                   <div className="flex flex-row items-center justify-start gap-8 w-full">
-                    <div>{task.title}</div>
+                    <div>{title}</div>
                     <div className="flex flex-row gap-3">
                       {Array.from({ length: priority }, (_, i) => (
                         <div

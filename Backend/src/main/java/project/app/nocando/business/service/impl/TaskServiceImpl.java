@@ -129,6 +129,24 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskResponse> unarchiveTasks(List<TaskRequest> request) {
+        Objects.requireNonNull(request);
+
+        List<String> ids = request.stream().map(TaskRequest::getId).toList();
+        List<TaskEntity> entities = repo.findAllById(ids);
+        entities.forEach((task)-> {
+            task.setTaskDate(LocalDate.now());
+            task.setFinishDate(LocalDate.now());
+            task.setIsDone(false);
+        });
+        repo.saveAllAndFlush(entities);
+        System.out.println(entities);
+        return entities.stream()
+                .map(entity -> taskMapper.map(entity, TaskResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void updateTaskDateForIncompleteTasks() {
         repo.updateTaskDateForIncompleteTasks(LocalDate.now());
     }

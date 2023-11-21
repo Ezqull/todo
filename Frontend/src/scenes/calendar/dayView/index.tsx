@@ -65,10 +65,10 @@ function DayView({ tasksForTheDay, day }: Props) {
             height: expand
               ? "100%"
               : tasks.length > 2
-              ? "14.5rem"
+              ? "15.5rem"
               : tasks.length == 0
               ? "8rem"
-              : "12rem",
+              : "13rem",
           }}
           className="w-full flex flex-col items-center gap-6 bg-primary-dark-100 shadow-xl rounded-xl p-6 flex-grow-0"
         >
