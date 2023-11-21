@@ -8,6 +8,7 @@ import project.app.nocando.business.exception.EntityNotFoundException;
 import project.app.nocando.business.exception.RequestWithIdException;
 import project.app.nocando.business.payload.request.TaskPeriodRequest;
 import project.app.nocando.business.payload.request.TaskRequest;
+import project.app.nocando.business.payload.response.TaskEmailResponse;
 import project.app.nocando.business.payload.response.TaskResponse;
 import project.app.nocando.business.service.TaskService;
 import project.app.nocando.data.model.TaskEntity;
@@ -102,6 +103,19 @@ public class TaskServiceImpl implements TaskService {
 
         return entities.stream()
                 .map(entity -> taskMapper.map(entity, TaskResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<TaskResponse> getAllTasksForToday(String email) {
+        Objects.requireNonNull(email);
+
+        UserAccountEntity user = userRepository.findByEmail(email).orElseThrow(EntityNotFoundException::new);
+
+        List<TaskEntity> entities = repo.findAllByTaskDateAndUser(LocalDate.now(), user);
+
+        return entities.stream()
+                .map(entity -> taskMapper.map(entity, TaskResponse.class))
                 .collect(Collectors.toList());    }
 
     @Override
@@ -112,6 +126,22 @@ public class TaskServiceImpl implements TaskService {
         entity.setIsDone(true);
 
         return taskMapper.map(entity, TaskResponse.class);
+    }
+
+    @Override
+    public void updateTaskDateForIncompleteTasks() {
+        repo.updateTaskDateForIncompleteTasks(LocalDate.now());
+    }
+
+    @Override
+    public List<TaskEmailResponse> dateCheckForEmail(LocalDate date) {
+        Objects.requireNonNull(date);
+
+        List<TaskEntity> entities = repo.findByFinishDateLessThanEqualAndIsDoneFalse(date);
+
+        return entities.stream()
+                .map(entity -> taskMapper.map(entity, TaskEmailResponse.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -141,7 +171,10 @@ public class TaskServiceImpl implements TaskService {
         request.setId(id);
         TaskEntity entity = taskMapper.map(request, TaskEntity.class);
 
-        return taskMapper.map(repo.save(entity), TaskResponse.class);
+        UserAccountEntity user = userRepository.findByEmail(request.getUserEmail()).orElseThrow(EntityNotFoundException::new);
+        entity.setUser(user);
+
+        return taskMapper.map(repo.saveAndFlush(entity), TaskResponse.class);
     }
 
     @Override

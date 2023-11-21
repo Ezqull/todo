@@ -3,11 +3,8 @@ import useMediaQuery from "../../hooks/useMediaQuery";
 import { TaskResponse } from "../../shared/types";
 import { getArchivedTasks } from "../../shared/tasks";
 import ArchivedTask from "./archived-task";
-import React from "react";
 
-type Props = {};
-
-const Archive = ({}: Props) => {
+const Archive = () => {
   const isAboveMediumScreens = useMediaQuery("(min-width:1060px)");
   const isAboveSmallScreens = useMediaQuery("(min-width:768px)");
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
@@ -42,9 +39,9 @@ const Archive = ({}: Props) => {
       {isAboveMediumScreens ? (
         <div className="w-[70%] h-full bg-primary-gray-100 rounded-[2rem] p-6 flex flex-col justify-start items-center gap-8 flex-gro">
           <span className="font-bold uppercase text-xl">Task Archive</span>
-          <div className="h-[100%] w-full overflow-scroll flex flex-row flex-wrap justify-evenly items-start gap-y-[2rem]">
+          <div className="h-max-full h-[85%] w-full overflow-scroll flex flex-row flex-wrap justify-start items-start gap-y-[5%] gap-x-[5%] pb-2">
             {tasks.map((task) => (
-              <div className="w-[30%] h-[10%] py-2">
+              <div className="w-[30%] h-[35%] py-2">
                 <ArchivedTask key={task.title} task={task} />
               </div>
             ))}
@@ -53,9 +50,9 @@ const Archive = ({}: Props) => {
       ) : isAboveSmallScreens ? (
         <div className="max-h-[65%] h-[57.5%] w-full bg-primary-gray-100 rounded-[2rem] p-6 flex flex-col justify-start items-center gap-8">
           <span className="font-bold uppercase text-xl">Task Archive</span>
-          <div className="h-[90%] w-full overflow-scroll flex flex-row flex-wrap justify-evenly items-start gap-y-[5%]">
+          <div className="h-[90%] w-full overflow-scroll flex flex-row flex-wrap justify-start items-start gap-y-[5%] gap-x-[5%]">
             {tasks.map((task) => (
-              <div className="w-[30%] h-max-[10rem] h-1/5">
+              <div className="w-[30%] h-max-[10rem] h-1/2">
                 <ArchivedTask key={task.title} task={task} />
               </div>
             ))}

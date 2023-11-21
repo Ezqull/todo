@@ -22,9 +22,7 @@ public class AuthService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthenticationResponse register(final RegisterRequest request) {
-
-        System.out.println(request);
+    public void register(final RegisterRequest request) {
 
         UserAccountEntity entity = new UserAccountEntity(
                 request.getEmail(),
@@ -32,11 +30,6 @@ public class AuthService {
                 );
 
         repo.save(entity);
-        String jwtToken = jwtService.generateToken(entity);
-
-        return AuthenticationResponse.builder()
-                .token(jwtToken)
-                .build();
     }
 
     public AuthenticationResponse authenticate(final AuthenticationRequest request) {

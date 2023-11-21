@@ -47,13 +47,26 @@ export const createTask = async (jwtToken: string, task: TaskRequest) => {
   }
 };
 
-// export const setTaskDone = async(jwtToken: string, task: TaskRequest) => {
-//   try {
-//     task.email = USER_EMAIL;
+export const setTaskDone = async (jwtToken: string, id: string) => {
+  try {
+    const response = await fetch(BASE_URL + "/task/archive/" + id, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`HTTP Error! Status: ${response.status}`);
+    }
 
-//     const response = await fetch(BASE_URL + "")
-//   }
-// }
+    const data = await response.json();
+    location.reload();
+    return data;
+  } catch (error) {
+    console.error("Wystąpił błąd podczas pobierania danych: ", error);
+  }
+};
 
 export const getTasksForTheWeek = async (jwtToken: string) => {
   try {
@@ -123,6 +136,28 @@ export const getTodaysTasks = async (jwtToken: string) => {
   }
 };
 
+export const getAllTasks = async (jwtToken: string) => {
+  try {
+    const response = await fetch(BASE_URL + "/task/today/all/" + USER_EMAIL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${jwtToken}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Wystąpił błąd podczas pobierania danych: ", error);
+  }
+};
+
 export const getArchivedTasks = async (jwtToken: string) => {
   try {
     const response = await fetch(BASE_URL + "/task/archived/" + USER_EMAIL, {
@@ -151,14 +186,16 @@ export const updateTask = async (
   id: string
 ) => {
   try {
+    request.email = USER_EMAIL;
     const response = await fetch(BASE_URL + "/task/" + id, {
-      method: "PUT",
+      method: "PATCH",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwtToken}`,
       },
       body: JSON.stringify(request),
     });
+    console.log(response);
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);

@@ -34,7 +34,6 @@ body,
   mix-blend-mode: difference;
 }
 
-
 @layer utilities {
   @variants responsive {
     .no-scrollbar::-webkit-scrollbar {

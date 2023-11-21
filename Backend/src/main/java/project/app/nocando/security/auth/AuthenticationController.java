@@ -1,6 +1,7 @@
 package project.app.nocando.security.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import project.app.nocando.security.auth.request.AuthenticationRequest;
@@ -16,8 +17,9 @@ public class AuthenticationController {
     private final AuthService service;
 
     @PostMapping("/register")
-    public ResponseEntity<AuthenticationResponse> register(@RequestBody RegisterRequest request){
-        return ResponseEntity.ok(service.register(request));
+    public ResponseEntity<Object> register(@RequestBody RegisterRequest request){
+        service.register(request);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping("/authenticate")

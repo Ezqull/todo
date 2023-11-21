@@ -14,18 +14,20 @@ function DayTask({ task }: Props) {
   return (
     <>
       {isAboveMediumScreens ? (
-        <div className={`h-[20%] ${taskStyle} rounded-xl py-2 my-1 shadow-md`}>
-          <div className="flex flex-col justify-center items-center">
-            <span>{task.title}</span>
+        <div
+          className={`h-[100px] ${taskStyle} rounded-xl py-2 my-1 shadow-md flex-shrink-0`}
+        >
+          <div className="h-full flex flex-col justify-evenly items-center">
+            <span className="text-center">{task.title}</span>
             <div>Priority: {task.priority}</div>
           </div>
         </div>
       ) : isAboveSmallScreens ? (
         <div
-          className={`h-[80%] w-[125px] ${taskStyle} rounded-xl py-2 my-1 shadow-md mb-2 flex-shrink-0`}
+          className={`h-[85%] w-[125px] ${taskStyle} rounded-xl py-2 my-1 shadow-md mb-2 flex-shrink-0`}
         >
-          <div className="flex flex-col justify-center items-center">
-            <span>{task.title}</span>
+          <div className="h-full flex flex-col justify-evenly items-center">
+            <span className="text-center">{task.title}</span>
             <div>Priority: {task.priority}</div>
           </div>
         </div>
