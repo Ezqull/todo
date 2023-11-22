@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import project.app.nocando.data.model.TokenEntity;
+import project.app.nocando.data.repo.TokenRepository;
 import project.app.nocando.security.service.JwtService;
 
 import java.io.IOException;
@@ -21,6 +23,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    private final TokenRepository repo;
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
@@ -43,7 +46,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         email = jwtService.extractUsername(jwt);
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails user = this.userDetailsService.loadUserByUsername(email);
-            if (jwtService.isTokenValid(jwt, user)) {
+            Boolean isTokenValid = repo.findByToken(jwt).map(t -> !t.getExpired() && !t.getRevoked()).orElse(false);
+            if (jwtService.isTokenValid(jwt, user) && isTokenValid) {
 
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         user,

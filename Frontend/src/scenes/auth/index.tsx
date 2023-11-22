@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { signIn, signUp } from "../../shared/auth";
+import { CheckIcon } from "@heroicons/react/24/solid";
 
 const Auth = () => {
   const [isSignIn, setIsSignIn] = useState(true);
@@ -15,6 +16,8 @@ const Auth = () => {
 
   const [triggerEmailShake, setTriggerEmailShake] = useState(false);
   const [triggerPassShake, setTriggerPassShake] = useState(false);
+
+  const [rememberMe, setRememberMe] = useState(false);
 
   const divStyle = isSignIn
     ? "bg-primary-gray-100 text-primary-dark-500"
@@ -77,7 +80,7 @@ const Auth = () => {
     }
 
     if (isSignIn) {
-      signIn({ email, password: pass });
+      signIn({ email, password: pass }, rememberMe);
     }
   };
 
@@ -202,19 +205,48 @@ const Auth = () => {
             {passError}
           </p>
         )}
-
+        {isSignIn && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: isSignIn ? 1 : 0 }}
+            transition={{ delay: 1, duration: 0.75, ease: "easeInOut" }}
+            className="absolute flex flex-row justify-center items-center gap-2 left-[50%] translate-x-[-50%] top-[64.5%]"
+          >
+            {rememberMe ? (
+              <div
+                className="w-6 h-6 bg-primary-gray-100 border-primary-dark-500 border-solid border-2 rounded-full"
+                onClick={() => setRememberMe(!rememberMe)}
+              >
+                <CheckIcon className="text-primary-dark-500"></CheckIcon>
+              </div>
+            ) : (
+              <div
+                className="w-6 h-6 border-solid border-2 bg-primary-dark-500 border-primary-gray-100 rounded-full"
+                onClick={() => setRememberMe(!rememberMe)}
+              >
+                <CheckIcon className="text-primary-gray-100"></CheckIcon>
+              </div>
+            )}
+            <span className="text-primary-gray-100">Remember me</span>
+          </motion.div>
+        )}
         <div className="flex justify-center">
           <motion.button
             animate={{
               backgroundColor: isSignIn ? "#171717" : "#FAFAFA",
               borderColor: isSignIn ? "#FAFAFA" : "#171717",
               color: isSignIn ? "#FAFAFA" : "#171717",
+              y: isSignIn ? "4rem" : 0,
             }}
-            initial={{ backgroundColor: "#171717", borderColor: "#FAFAFA" }}
+            initial={{
+              backgroundColor: "#171717",
+              borderColor: "#FAFAFA",
+              y: 0,
+            }}
             transition={{ duration: 0.75, ease: "easeInOut" }}
             type="submit"
             onClick={() => {}}
-            className={`text-primary-gray-100 border-primary-gray-100 border-2 w-1/2 rounded-full py-1 px-4 ${button} mt-2`}
+            className={`text-primary-gray-100 border-primary-gray-100 border-2 w-1/2 rounded-full py-1 px-4 ${button}`}
           >
             <AnimatePresence mode="wait">
               <motion.span

@@ -1,13 +1,7 @@
-import React from "react";
-import { SelectedPage } from "../../shared/types";
-import Link from "./Link";
+import { logOut } from "../../shared/auth";
+import { Link } from "react-router-dom";
 
-type Props = {
-  selectedPage: SelectedPage;
-  setSelectedPage: (value: SelectedPage) => void;
-};
-
-function Navbar({ selectedPage, setSelectedPage }: Props) {
+function Navbar() {
   const flexBetween = "flex items-center justify-between";
 
   return (
@@ -17,11 +11,18 @@ function Navbar({ selectedPage, setSelectedPage }: Props) {
       >
         <div className={`${flexBetween} mx-auto w-5/6 px-4`}>
           <div>NoCanDo</div>
-          <Link
-            page="LogOut"
-            selectedPage={selectedPage}
-            setSelectedPage={setSelectedPage}
-          />
+          <Link to="/">
+            <div
+              onClick={() => {
+                localStorage.removeItem("jwtToken");
+                localStorage.removeItem("refreshToken");
+                logOut();
+                window.location.reload();
+              }}
+            >
+              Log Out
+            </div>{" "}
+          </Link>
         </div>
       </div>
     </nav>

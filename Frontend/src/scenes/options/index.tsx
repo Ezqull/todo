@@ -1,17 +1,19 @@
-import { PlusIcon, CheckIcon } from "@heroicons/react/24/solid";
+import {
+  PlusIcon,
+  CheckIcon,
+  ListBulletIcon,
+  CalendarIcon,
+  ChartPieIcon,
+  ArchiveBoxIcon,
+} from "@heroicons/react/24/solid";
 import useMediaQuery from "../../hooks/useMediaQuery";
 import { useState } from "react";
-import Link from "../navbar/Link";
-import { SelectedPage, TaskRequest } from "../../shared/types";
+import { TaskRequest } from "../../shared/types";
 import { createTask } from "../../shared/tasks";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
-type Props = {
-  selectedPage: SelectedPage;
-  setSelectedPage: (value: SelectedPage) => void;
-};
-
-function Options({ selectedPage, setSelectedPage }: Props) {
+function Options() {
   const flexBetween = "flex flex-col items-center justify-between";
   const inputStyleBig =
     "w-full bg-primary-dark-500 border-2 border-primary-gray-100 rounded-xl text-primary-gray-100 p-2";
@@ -153,34 +155,26 @@ function Options({ selectedPage, setSelectedPage }: Props) {
             <div className="h-1/2 w-full flex flex-col">
               <div className="flex flex-row w-full h-10 justify-evenly mt-4">
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="calendar"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/">
+                    <ListBulletIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="home"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/calendar">
+                    <CalendarIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
               </div>
               <div className="flex flex-row w-full h-10 justify-evenly mt-4">
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="statistics"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/statistics">
+                    <ChartPieIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="archive"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/archive">
+                    <ArchiveBoxIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
               </div>
             </div>
@@ -268,34 +262,26 @@ function Options({ selectedPage, setSelectedPage }: Props) {
             <div className="h-full flex flex-row w-1/5 mr-2">
               <div className="flex flex-col w-full justify-evenly items-center">
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="calendar"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/calendar">
+                    <CalendarIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="home"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/">
+                    <ListBulletIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
               </div>
               <div className="flex flex-col w-full justify-evenly">
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="statistics"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/statistics">
+                    <ChartPieIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="archive"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/archive">
+                    <ArchiveBoxIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
               </div>
             </div>
@@ -312,18 +298,14 @@ function Options({ selectedPage, setSelectedPage }: Props) {
             <div className="h-full w-full flex flex-row justify-center items-center">
               <div className="flex flex-row w-[40%] h-full gap-4 justify-evenly items-center">
                 <button className="w-8 h-8 cursor-none flex justify-center items-center">
-                  <Link
-                    page="statistics"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/statistics">
+                    <ChartPieIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="archive"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/archive">
+                    <ArchiveBoxIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
               </div>
               <div
@@ -347,18 +329,14 @@ function Options({ selectedPage, setSelectedPage }: Props) {
 
               <div className="flex flex-row w-[40%] h-full gap-4 justify-evenly items-center">
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="calendar"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/calendar">
+                    <CalendarIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
                 <button className="w-8 h-8 cursor-none">
-                  <Link
-                    page="home"
-                    selectedPage={selectedPage}
-                    setSelectedPage={setSelectedPage}
-                  />
+                  <Link to="/">
+                    <ListBulletIcon className="w-8 h-8 cursor-none" />
+                  </Link>
                 </button>
               </div>
             </div>

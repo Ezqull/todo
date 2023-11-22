@@ -1,4 +1,3 @@
-import { TaskRequest } from "./types";
 export const BASE_URL = "http://localhost:8080";
 
 export enum SelectedPage {
@@ -62,6 +61,10 @@ export const taskMapper = (response: TaskResponse): TaskRequest => {
   };
   return request;
 };
+
+export interface DecodedToken {
+  exp?: number;
+}
 
 const formatDateToString = (date: Date) => {
   const dd = String(date.getDate()).padStart(2, "0");
