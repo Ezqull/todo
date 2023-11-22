@@ -78,6 +78,7 @@ public class TaskController implements BaseController<TaskRequest, TaskResponse>
     public ResponseEntity<TaskResponse> finishTask(@PathVariable String id) {
         return ResponseEntity.ok(service.finishTask(id));
     }
+
     @PatchMapping("/unarchive")
     public ResponseEntity<List<TaskResponse>> unarchiveTasks(@RequestBody List<TaskRequest> request) {
         return ResponseEntity.ok(service.unarchiveTasks(request));

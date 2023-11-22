@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { TaskRequest, TaskResponse } from "../../../shared/types";
 import {
   PencilIcon,
@@ -34,7 +34,7 @@ const Task = ({ task }: Props) => {
 
   const archive = async (e: Event) => {
     e.preventDefault();
-    setTaskDone(jwtToken, task.id);
+    setTaskDone(jwtToken as string, task.id as string);
   };
 
   const changeEdit = () => {
@@ -56,7 +56,7 @@ const Task = ({ task }: Props) => {
       finishDate: formatDateToString(new Date(finishDate)),
       email: "",
     };
-    updateTask(jwtToken, request, task.id);
+    updateTask(jwtToken as string, request, task.id as string);
     setEdit(!edit);
   };
 

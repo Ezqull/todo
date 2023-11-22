@@ -10,10 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Blob;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @Entity
@@ -29,6 +26,9 @@ public class UserAccountEntity extends BaseEntity implements UserDetails {
     @Column(name = "password",
             nullable = false)
     private String password;
+
+    @OneToMany(mappedBy = "user")
+    private List<TokenEntity> tokens = new ArrayList<>();
 
     public UserAccountEntity(String email, String password) {
         this.email = email;

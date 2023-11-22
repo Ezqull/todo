@@ -1,5 +1,7 @@
 package project.app.nocando.security.auth;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +10,8 @@ import project.app.nocando.security.auth.request.AuthenticationRequest;
 import project.app.nocando.security.auth.request.RegisterRequest;
 import project.app.nocando.security.auth.response.AuthenticationResponse;
 import project.app.nocando.security.auth.service.AuthService;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
@@ -25,5 +29,13 @@ public class AuthenticationController {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){
         return ResponseEntity.ok(service.authenticate(request));
+    }
+
+    @PostMapping("/refresh-token")
+    public void refreshToken(
+            HttpServletRequest request,
+            HttpServletResponse response
+    ) throws IOException {
+        service.refreshToken(request, response);
     }
 }
