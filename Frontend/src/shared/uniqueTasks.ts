@@ -23,7 +23,14 @@ export default function mergeAndFilterTasks(
   finishTasksWithFlag.forEach((task) => {
     const dateKey = new Date(task.taskDate).toISOString().split("T")[0];
     if (dateTasksMap[dateKey]) {
-      dateTasksMap[dateKey] = [task];
+      const arr = dateTasksMap[dateKey];
+      arr.forEach((arrTask, index) => {
+        if (arrTask.id === task.id) {
+          arr[index] = task;
+        }
+      });
+
+      dateTasksMap[dateKey] = arr;
     } else {
       dateTasksMap[dateKey] = [task];
     }

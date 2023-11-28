@@ -14,6 +14,8 @@ function DayView({ tasksForTheDay, day }: Props) {
   const isAboveSmallScreens = useMediaQuery("(min-width:768px)");
   const [tasks, setTasks] = useState(tasksForTheDay);
   const [expand, setExpand] = useState(false);
+  const height =
+    tasks.length > 2 ? "255px" : tasks.length == 0 ? "125px" : "200px";
 
   useEffect(() => {
     const getTasksForDay = (date: Date): TaskResponse[] => {
@@ -28,12 +30,12 @@ function DayView({ tasksForTheDay, day }: Props) {
       );
     };
     setTasks(getTasksForDay(day));
-  }, [day, tasksForTheDay]);
+  }, [tasksForTheDay, setTasks, day]);
 
   return (
     <>
       {isAboveMediumScreens ? (
-        <div className="h-[95%] flex flex-col gap-6">
+        <div className="h-[95%] flex flex-col gap-6 pb-8">
           <div className="w-full h-12 rounded-xl bg-primary-gray-200 px-6 flex items-center justify-center flex-shrink-0">
             <span className="drop-shadow-md shadow-primary-dark-500">
               {day.toLocaleDateString()}
@@ -41,7 +43,7 @@ function DayView({ tasksForTheDay, day }: Props) {
           </div>
           <div className="flex flex-col gap-4 overflow-y-auto h-[80%]">
             {tasks.map((task: TaskResponse) => (
-              <DayTask task={task} />
+              <DayTask key={task.id} task={task} />
             ))}
           </div>
         </div>
@@ -54,7 +56,7 @@ function DayView({ tasksForTheDay, day }: Props) {
           </div>
           <div className="flex flex-row items-center justify-start gap-4 overflow-y-auto h-[100%] w-full">
             {tasks.map((task: TaskResponse) => (
-              <DayTask task={task} />
+              <DayTask key={task.id} task={task} />
             ))}
           </div>
         </div>
@@ -62,13 +64,7 @@ function DayView({ tasksForTheDay, day }: Props) {
         <motion.div
           initial={false}
           animate={{
-            height: expand
-              ? "100%"
-              : tasks.length > 2
-              ? "15.5rem"
-              : tasks.length == 0
-              ? "8rem"
-              : "13rem",
+            height: expand ? `${105 * (tasks.length / 2) + 200}px` : height,
           }}
           className="w-full flex flex-col items-center gap-6 bg-primary-dark-100 shadow-xl rounded-xl p-6 flex-grow-0"
         >
@@ -79,7 +75,9 @@ function DayView({ tasksForTheDay, day }: Props) {
           </div>
           <div className="flex flex-row flex-wrap items-start justify-start gap-x-[10%] gap-y-[5px] h-[100%] w-full overflow-y-hidden">
             {tasks.length != 0 ? (
-              tasks.map((task: TaskResponse) => <DayTask task={task} />)
+              tasks.map((task: TaskResponse) => (
+                <DayTask key={task.id} task={task} />
+              ))
             ) : (
               <div className="w-full uppercase text-xl flex justify-center items-center">
                 <span>No tasks for the day :D</span>

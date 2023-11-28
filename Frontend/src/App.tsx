@@ -22,14 +22,14 @@ function App() {
   useEffect(() => {
     setIsLoggedIn(localStorage.getItem("jwtToken") !== null ? true : false);
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX - 8);
-      cursorY.set(e.clientY - 8);
+      cursorX.set(e.clientX - 6);
+      cursorY.set(e.clientY - 6);
     };
     window.addEventListener("mousemove", moveCursor);
     return () => {
       window.removeEventListener("mousemove", moveCursor);
     };
-  }, [cursorX, cursorY]);
+  }, [cursorX, cursorY, isLoggedIn]);
 
   return (
     <div className="h-full w-full">
@@ -38,9 +38,6 @@ function App() {
         style={{
           translateX: cursorX,
           translateY: cursorY,
-        }}
-        transition={{
-          duration: 0.1,
         }}
       ></motion.div>
       {isLoggedIn && !isTokenExpired(Number(getExpirationDateFromToken())) ? (

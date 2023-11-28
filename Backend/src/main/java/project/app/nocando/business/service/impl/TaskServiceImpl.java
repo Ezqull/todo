@@ -161,6 +161,17 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskEmailResponse> todaysTasksForEmail(LocalDate date) {
+        Objects.requireNonNull(date);
+
+        List<TaskEntity> entities = repo.findAllByTaskDateAndIsDoneFalse(date);
+
+        return entities.stream()
+                .map(entity -> taskMapper.map(entity, TaskEmailResponse.class))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public TaskResponse save(TaskRequest request) {
         Objects.requireNonNull(request);
 

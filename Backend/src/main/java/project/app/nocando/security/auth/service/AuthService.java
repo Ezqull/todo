@@ -37,7 +37,6 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     public void register(final RegisterRequest request) {
-
         UserAccountEntity entity = new UserAccountEntity(
                 request.getEmail(),
                 passwordEncoder.encode(request.getPassword())

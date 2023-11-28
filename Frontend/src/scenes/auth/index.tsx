@@ -243,7 +243,13 @@ const Auth = () => {
               borderColor: "#FAFAFA",
               y: 0,
             }}
-            transition={{ duration: 0.75, ease: "easeInOut" }}
+            transition={{
+              duration: 0.75,
+              ease: "easeInOut",
+              y: {
+                duration: 0.5,
+              },
+            }}
             type="submit"
             onClick={() => {}}
             className={`text-primary-gray-100 border-primary-gray-100 border-2 w-1/2 rounded-full py-1 px-4 ${button}`}

@@ -25,6 +25,7 @@ const initialRequest: TaskPeriodRequest = {
 export const createTask = async (jwtToken: string, task: TaskRequest) => {
   try {
     task.email = USER_EMAIL;
+    console.log(task);
 
     const response = await fetch(BASE_URL + "/task", {
       method: "POST",
@@ -40,7 +41,6 @@ export const createTask = async (jwtToken: string, task: TaskRequest) => {
     }
 
     const data = await response.json();
-    location.reload();
     return data;
   } catch (error) {
     console.error("Wystąpił błąd podczas pobierania danych: ", error);
@@ -61,7 +61,6 @@ export const setTaskDone = async (jwtToken: string, id: string) => {
     }
 
     const data = await response.json();
-    location.reload();
     return data;
   } catch (error) {
     console.error("Wystąpił błąd podczas pobierania danych: ", error);
@@ -72,8 +71,6 @@ export const setTasksUndone = async (
   jwtToken: string,
   tasks: TaskRequest[]
 ) => {
-  // console.log(tasks);
-
   try {
     const response = await fetch(BASE_URL + "/task/unarchive", {
       method: "PATCH",
@@ -88,7 +85,6 @@ export const setTasksUndone = async (
     }
 
     const data = await response.json();
-    location.reload();
     return data;
   } catch (error) {
     console.error("Wystąpił błąd podczas pobierania danych: ", error);

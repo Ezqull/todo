@@ -18,7 +18,7 @@ const Archive = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getArchivedTasks(jwtToken);
+        const response = await getArchivedTasks(jwtToken as string);
         const sortedTasks = response.sort(
           (a: TaskResponse, b: TaskResponse) => {
             const dateA = new Date(a.taskDate);
@@ -36,11 +36,12 @@ const Archive = () => {
     if (jwtToken) {
       fetchData();
     }
-  }, []);
+  }, [jwtToken, tasks]);
 
   const unarchive = () => {
     const newTasksToUnarchive = tasks.filter(
-      (task) => archivedStatus[task.id] && !tasksToUnarchive.includes(task)
+      (task) =>
+        archivedStatus[task.id as string] && !tasksToUnarchive.includes(task)
     );
 
     if (newTasksToUnarchive.length > 0) {
@@ -52,7 +53,7 @@ const Archive = () => {
 
       const request = updatedTasksToUnarchive.map(taskMapper);
       if (request.length !== 0) {
-        setTasksUndone(jwtToken, request);
+        setTasksUndone(jwtToken as string, request);
       }
     }
   };
@@ -79,19 +80,27 @@ const Archive = () => {
           </div>
           <div className="h-max-full h-[85%] w-full overflow-scroll flex flex-row flex-wrap justify-start items-start gap-y-[5%] gap-x-[5%] pb-2">
             {tasks.map((task) => (
-              <div className="w-[30%] h-[35%] py-2 bg-primary-gray-200 rounded-xl p-4 shadow-md text-primary-dark-400 border-b-2 border-primary-dark-500 relative">
-                <ArchivedTask key={task.id} task={task} />
-                {archivedStatus[task.id] ? (
+              <div
+                key={task.id}
+                className="w-[30%] h-[35%] py-2 bg-primary-gray-200 rounded-xl p-4 shadow-md text-primary-dark-400 border-b-2 border-primary-dark-500 relative"
+              >
+                <div
+                  className="h-full w-full"
+                  onClick={() => toggleArchiveStatus(task.id as string)}
+                >
+                  <ArchivedTask task={task} />
+                </div>
+                {archivedStatus[task.id as string] ? (
                   <div
                     className="w-5 h-5 bg-primary-dark-500 border-solid border-2 rounded-md absolute top-2 right-2"
-                    onClick={() => toggleArchiveStatus(task.id)}
+                    onClick={() => toggleArchiveStatus(task.id as string)}
                   >
                     <CheckIcon className="text-primary-gray-100"></CheckIcon>
                   </div>
                 ) : (
                   <div
                     className="w-5 h-5 border-solid border-2 border-primary-dark-500 rounded-md absolute top-2 right-2"
-                    onClick={() => toggleArchiveStatus(task.id)}
+                    onClick={() => toggleArchiveStatus(task.id as string)}
                   ></div>
                 )}
               </div>
@@ -111,19 +120,23 @@ const Archive = () => {
           </div>
           <div className="h-[90%] w-full overflow-scroll flex flex-row flex-wrap justify-start items-start gap-y-[5%] gap-x-[5%]">
             {tasks.map((task) => (
-              <div className="w-[30%] h-max-[10rem] h-1/2 py-2 bg-primary-gray-200 rounded-xl p-4 shadow-md text-primary-dark-400 border-b-2 border-primary-dark-500 relative">
-                <ArchivedTask key={task.id} task={task} />
-                {archivedStatus[task.id] ? (
+              <div
+                key={task.id}
+                className="w-[30%] h-max-[10rem] h-1/2 py-2 bg-primary-gray-200 rounded-xl p-4 shadow-md text-primary-dark-400 border-b-2 border-primary-dark-500 relative"
+                onClick={() => toggleArchiveStatus(task.id as string)}
+              >
+                <ArchivedTask task={task} />
+                {archivedStatus[task.id as string] ? (
                   <div
                     className="w-5 h-5 bg-primary-dark-500 border-solid border-2 rounded-md absolute top-2 right-2"
-                    onClick={() => toggleArchiveStatus(task.id)}
+                    onClick={() => toggleArchiveStatus(task.id as string)}
                   >
                     <CheckIcon className="text-primary-gray-100"></CheckIcon>
                   </div>
                 ) : (
                   <div
                     className="w-5 h-5 border-solid border-2 border-primary-dark-500 rounded-md absolute top-2 right-2"
-                    onClick={() => toggleArchiveStatus(task.id)}
+                    onClick={() => toggleArchiveStatus(task.id as string)}
                   ></div>
                 )}
               </div>
@@ -140,22 +153,26 @@ const Archive = () => {
             >
               UnArchive
             </button>
-          </div>{" "}
-          <div className="h-full overflow-scroll flex flex-row flex-wrap justify-evenly items-start  gap-y-[5%] gap-x-[5%] ">
+          </div>
+          <div className="h-full w-full overflow-scroll flex flex-row flex-wrap justify-start items-start  gap-y-[5%] gap-x-[5%] ">
             {tasks.map((task) => (
-              <div className="w-[45%] h-max-[15rem] h-1/3 py-2 bg-primary-gray-200 rounded-xl p-4 shadow-md text-primary-dark-400 border-b-2 border-primary-dark-500 relative">
-                <ArchivedTask key={task.id} task={task} />
-                {archivedStatus[task.id] ? (
+              <div
+                key={task.id}
+                className="w-[45%] h-max-[15rem] h-1/3 py-2 bg-primary-gray-200 rounded-xl p-4 shadow-md text-primary-dark-400 border-b-2 border-primary-dark-500 relative"
+                onClick={() => toggleArchiveStatus(task.id as string)}
+              >
+                <ArchivedTask task={task} />
+                {archivedStatus[task.id as string] ? (
                   <div
                     className="w-5 h-5 bg-primary-dark-500 border-solid border-2 rounded-md absolute top-2 right-2"
-                    onClick={() => toggleArchiveStatus(task.id)}
+                    onClick={() => toggleArchiveStatus(task.id as string)}
                   >
                     <CheckIcon className="text-primary-gray-100"></CheckIcon>
                   </div>
                 ) : (
                   <div
                     className="w-5 h-5 border-solid border-2 border-primary-dark-500 rounded-md absolute top-2 right-2"
-                    onClick={() => toggleArchiveStatus(task.id)}
+                    onClick={() => toggleArchiveStatus(task.id as string)}
                   ></div>
                 )}
               </div>

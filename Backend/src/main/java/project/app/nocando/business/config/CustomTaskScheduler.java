@@ -29,20 +29,24 @@ public class CustomTaskScheduler {
         service.updateTaskDateForIncompleteTasks();
     }
 
-   @Scheduled(cron = "0 0 9 * * *", zone = "Europe/Warsaw")
+   @Scheduled(cron = "0 15 13 * * *", zone = "Europe/Warsaw")
     public void sendReminderForUnfinishedTasks() {
         LocalDate today = LocalDate.now();
         List<TaskEmailResponse> tasks = service.dateCheckForEmail(today);
-
         for (TaskEmailResponse task : tasks) {
             EmailDetails details = new EmailDetails();
             details.setRecipient(task.getUserEmail());
             details.setSubject("Przypomnienie o nieukończonym zadaniu: " + task.getTitle());
             long count = ChronoUnit.DAYS.between(task.getFinishDate(),LocalDate.now());
             details.setMsgBody(String.format("""
-                                 Przypomnienie: Zadanie %s nie zostało ukończone.
-                                 Dni spóźnienia: %d""",
-                    task.getTitle(), count));
+                    Masz na dziś zadanko przyjacielu.
+                    Lepiej nie przekładać go na później, nie uważasz?
+                    Zadanie:
+                    Tytuł: %s
+                    Opis: %s
+                    Dni spóźnienia: %d
+                    """,
+                    task.getTitle(), task.getDescription(), count));
 
 
             emailService.sendSimpleMail(details);

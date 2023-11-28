@@ -6,20 +6,17 @@ import {
   getTasksForTheWeek,
 } from "../../shared/tasks";
 import DayView from "./dayView";
-import mergeTasksWithFinishTasks from "../../shared/uniqueTasks";
 import mergeAndFilterTasks from "../../shared/uniqueTasks";
 
 function Calendar() {
   const isAboveMediumScreens = useMediaQuery("(min-width:1060px)");
   const isAboveSmallScreens = useMediaQuery("(min-width:768px)");
 
-  const [uniqueDates, setUniqueDates] = useState<Date[]>([]);
-
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
   const [finishTasks, setFinishTasks] = useState<TaskResponse[]>([]);
 
   useEffect(() => {
-    const jwtToken: string = localStorage.getItem("jwtToken");
+    const jwtToken: string = localStorage.getItem("jwtToken") as string;
 
     const fetchData = async () => {
       try {
@@ -42,8 +39,7 @@ function Calendar() {
   useEffect(() => {
     const uniqueTasks = mergeAndFilterTasks(tasks, finishTasks);
     setTasks(uniqueTasks);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [finishTasks]);
+  }, [finishTasks, mergeAndFilterTasks]);
 
   return (
     <>

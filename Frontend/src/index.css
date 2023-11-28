@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Frank+Ruhl+Libre&family=Hind+Vadodara&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -21,9 +22,13 @@ body,
   font-family: "Hind Vadodara", "sans-serif";
 }
 
+.logo {
+  font-family: "League Spartan", "sans-serif";
+}
+
 .cursor {
-  @apply w-4;
-  @apply h-4;
+  @apply w-3;
+  @apply h-3;
   @apply rounded-full;
   @apply fixed;
   @apply z-50;

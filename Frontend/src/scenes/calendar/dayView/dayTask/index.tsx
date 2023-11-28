@@ -15,9 +15,9 @@ function DayTask({ task }: Props) {
     <>
       {isAboveMediumScreens ? (
         <div
-          className={`h-[100px] ${taskStyle} rounded-xl py-2 my-1 shadow-md flex-shrink-0`}
+          className={`h-[125px] ${taskStyle} rounded-xl py-2 my-1 shadow-md flex-shrink-0`}
         >
-          <div className="h-full flex flex-col justify-evenly items-center">
+          <div className="h-full flex flex-col justify-evenly items-center px-2">
             <span className="text-center h-8 leading-4">{task.title}</span>
             <div className="text-center h-8">Priority: {task.priority}</div>
           </div>

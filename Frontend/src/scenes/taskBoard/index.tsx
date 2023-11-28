@@ -9,7 +9,7 @@ const Board = () => {
   const isAboveMediumScreens = useMediaQuery("(min-width:1060px)");
   const isAboveSmallScreens = useMediaQuery("(min-width:768px)");
   const [tasks, setTasks] = useState<TaskResponse[]>([]);
-  const [sortByPrio, setSortByPrio] = useState(false);
+  const [sortByPrio, setSortByPrio] = useState(true);
   const [filter, setFilter] = useState("all");
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Board = () => {
           const modifiedTasks = response.map((task: TaskResponse) => {
             const taskDate = new Date(task.taskDate);
             const finishDate = new Date(task.finishDate);
-            if (taskDate > finishDate) {
+            if (taskDate >= finishDate) {
               task.isLate = true;
               return { ...task, priority: 10 };
             }
@@ -31,12 +31,25 @@ const Board = () => {
           });
 
           const filteredTasks = modifiedTasks.filter((task: TaskResponse) => {
+            const now = new Date();
+            const inThreeDays = new Date(
+              now.getTime() + 3 * 24 * 60 * 60 * 1000
+            );
+
             if (filter === "all") {
               return true;
             } else if (filter === "low") {
-              return task.priority <= 5;
+              if (sortByPrio) {
+                return task.priority <= 5;
+              } else {
+                return new Date(task.finishDate) >= inThreeDays;
+              }
             } else if (filter === "high") {
-              return task.priority > 5;
+              if (sortByPrio) {
+                return task.priority > 5;
+              } else {
+                return new Date(task.finishDate) < inThreeDays;
+              }
             } else {
               return false;
             }
@@ -44,7 +57,7 @@ const Board = () => {
 
           const sortedTasks = filteredTasks.sort(
             (a: TaskResponse, b: TaskResponse) => {
-              if (!sortByPrio) {
+              if (sortByPrio) {
                 return b.priority - a.priority;
               } else {
                 const dateA = new Date(a.finishDate).getTime();
@@ -64,7 +77,7 @@ const Board = () => {
     if (jwtToken) {
       fetchData();
     }
-  }, [sortByPrio, filter]);
+  }, [tasks, sortByPrio, filter]);
 
   return (
     <>
@@ -75,18 +88,18 @@ const Board = () => {
               Tasks For The Day
             </span>
             <div className="w-[70%] flex flex-col items-end gap-4">
-              <div className="w-[45%] h-[60%] flex flex-row gap-[1%] rounded-full justify-center items-center shadow-md p-2 relative">
+              <div className="w-[45%] h-[60%] flex flex-row gap-[1%] rounded-full justify-center items-center shadow-md py-2 relative">
                 <motion.div
                   animate={{
                     x:
                       filter === "all"
-                        ? "-105%"
+                        ? "-115%"
                         : filter === "low"
                         ? 0
-                        : "105%",
+                        : "115%",
                   }}
                   transition={{ duration: 0.5 }}
-                  className="w-[29%] h-[80%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
+                  className="w-[29%] h-[75%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
                 ></motion.div>
                 <span
                   onClick={() => setFilter("all")}
@@ -110,9 +123,9 @@ const Board = () => {
               <div className="w-[60%] h-[50%] flex flex-row gap-4 rounded-full justify-center items-center shadow-md p-2 relative">
                 <motion.div
                   onClick={() => setSortByPrio(!sortByPrio)}
-                  animate={{ x: sortByPrio ? "50%" : "-50%" }}
+                  animate={{ x: !sortByPrio ? "50%" : "-50%" }}
                   transition={{ duration: 0.5 }}
-                  className="w-[48%] h-[80%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
+                  className="w-[48%] h-[75%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
                 ></motion.div>
                 <span
                   onClick={() => setSortByPrio(!sortByPrio)}
@@ -129,9 +142,9 @@ const Board = () => {
               </div>
             </div>
           </div>
-          <div className="h-[90%] w-full overflow-scroll">
+          <div className="h-[80%] w-full overflow-scroll mt-4">
             {tasks.map((task) => (
-              <Task key={task.title} task={task} />
+              <Task key={task.id} task={task} />
             ))}
           </div>
         </div>
@@ -142,7 +155,7 @@ const Board = () => {
               Tasks For The Day
             </span>
             <div className="w-[70%] h-[20%] flex flex-row items-end gap-4">
-              <div className="w-[45%] h-[60%] flex flex-row rounded-full justify-evenly items-center shadow-md p-2 relative">
+              <div className="w-[45%] h-[60%] flex flex-row rounded-full justify-evenly items-center shadow-md py-2 relative">
                 <motion.div
                   animate={{
                     x:
@@ -153,7 +166,7 @@ const Board = () => {
                         : "105%",
                   }}
                   transition={{ duration: 0.5 }}
-                  className="w-[29%] h-[80%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
+                  className="w-[31%] h-[80%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
                 ></motion.div>
                 <span
                   onClick={() => setFilter("all")}
@@ -177,7 +190,7 @@ const Board = () => {
               <div className="w-[50%] h-[50%] flex flex-row gap-4 rounded-full justify-center items-center shadow-md p-2 relative">
                 <motion.div
                   onClick={() => setSortByPrio(!sortByPrio)}
-                  animate={{ x: sortByPrio ? "50%" : "-50%" }}
+                  animate={{ x: !sortByPrio ? "50%" : "-50%" }}
                   transition={{ duration: 0.5 }}
                   className="w-[48%] h-[80%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
                 ></motion.div>
@@ -196,31 +209,31 @@ const Board = () => {
               </div>
             </div>
           </div>
-          <div className="h-[90%] w-full overflow-scroll">
+          <div className="h-[85%] w-full overflow-scroll mt-6">
             {tasks.map((task) => (
-              <Task key={task.title} task={task} />
+              <Task key={task.id} task={task} />
             ))}
           </div>
         </div>
       ) : (
-        <div className="h-full w-full bg-primary-gray-100 rounded-[2rem] p-6 overflow-scroll no-scrollbar">
+        <div className="h-full w-full bg-primary-gray-100 rounded-[2rem] p-6">
           <div className="flex flex-col justify-between items-center mb-4 gap-2">
             <span className="font-bold uppercase text-xl">
               Tasks For The Day
             </span>
             <div className="w-full h-[20%] flex flex-col items-center gap-4">
-              <div className="w-[45%] h-[60%] flex flex-row gap-[1%] rounded-full justify-evenly items-center shadow-md p-2 relative">
+              <div className="w-[75%] h-[60%] flex flex-row gap-[1%] rounded-full justify-evenly items-center shadow-md py-2 relative">
                 <motion.div
                   animate={{
                     x:
                       filter === "all"
-                        ? "-105%"
+                        ? "-115%"
                         : filter === "low"
                         ? 0
-                        : "105%",
+                        : "115%",
                   }}
                   transition={{ duration: 0.5 }}
-                  className="w-[29%] h-[80%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
+                  className="w-[29%] h-[70%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
                 ></motion.div>
                 <span
                   onClick={() => setFilter("all")}
@@ -241,12 +254,12 @@ const Board = () => {
                   HIGH
                 </span>
               </div>
-              <div className="w-[50%] h-[50%] flex flex-row gap-4 rounded-full justify-center items-center shadow-md p-2 relative">
+              <div className="w-[75%] h-[50%] flex flex-row gap-4 rounded-full justify-center items-center shadow-md p-2 relative">
                 <motion.div
                   onClick={() => setSortByPrio(!sortByPrio)}
-                  animate={{ x: sortByPrio ? "50%" : "-50%" }}
+                  animate={{ x: !sortByPrio ? "50%" : "-50%" }}
                   transition={{ duration: 0.5 }}
-                  className="w-[48%] h-[80%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
+                  className="w-[48%] h-[70%] bg-primary-gray-100 absolute mix-blend-difference rounded-full"
                 ></motion.div>
                 <span
                   onClick={() => setSortByPrio(!sortByPrio)}
@@ -262,11 +275,13 @@ const Board = () => {
                 </span>
               </div>
             </div>
-          </div>{" "}
-          <div className="overflow-scroll">
-            {tasks.map((task) => (
-              <Task key={task.title} task={task} />
-            ))}
+          </div>
+          <div className="h-[75%] pb-4 overflow-scroll no-scrollbar">
+            <div className="">
+              {tasks.map((task) => (
+                <Task key={task.id} task={task} />
+              ))}
+            </div>
           </div>
         </div>
       )}

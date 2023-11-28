@@ -44,6 +44,14 @@ function Options() {
     return formattedDate;
   };
 
+  const resetForm = () => {
+    setTitle("");
+    setIsToday(false);
+    setPriority(1);
+    setTaskDate(new Date());
+    setFinishDate(new Date());
+  };
+
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
 
@@ -61,7 +69,7 @@ function Options() {
         finishDate: formattedDate,
         email: "",
       };
-      createTask(jwtToken, task);
+      createTask(jwtToken as string, task);
     } else {
       const task: TaskRequest = {
         title: title,
@@ -72,8 +80,9 @@ function Options() {
         finishDate: formatDateToString(finishDate as Date),
         email: "",
       };
-      createTask(jwtToken, task);
+      createTask(jwtToken as string, task);
     }
+    resetForm();
   };
 
   return (
@@ -309,7 +318,7 @@ function Options() {
                 </button>
               </div>
               <div
-                className="w-[90px] h-[90px] rounded-full bg-primary-dark-500 text-primary-gray-100 border-2 border-primary-gray-100 translate-y-[-17.5%]"
+                className="w-[90px] h-[90px] rounded-full bg-primary-dark-500 text-primary-gray-100 border-2 border-primary-gray-100 translate-y-[-17.5%] flex justify-center items-center"
                 onClick={(e) => {
                   if (
                     isAdding &&
@@ -317,14 +326,19 @@ function Options() {
                     priority &&
                     (isToday || (taskDate && finishDate))
                   ) {
-                    console.log(isAdding);
                     handleSubmit(e);
                   }
                   setTitle("");
                   setIsAdding(!isAdding);
                 }}
               >
-                <PlusIcon />
+                <motion.div
+                  animate={{
+                    rotate: isAdding ? 360 : 0,
+                  }}
+                >
+                  <PlusIcon className="w-12 h-12" />
+                </motion.div>
               </div>
 
               <div className="flex flex-row w-[40%] h-full gap-4 justify-evenly items-center">
@@ -391,7 +405,7 @@ function Options() {
                     <label htmlFor="date">Task Date</label>
                     <input
                       id="date"
-                      className={`${inputStyleBig} ${transition}`}
+                      className={`${inputStyleBig} ${transition} disabled:bg-primary-dark-400 disabled:text-primary-dark-100`}
                       type="date"
                       disabled={isToday}
                     />
@@ -400,7 +414,7 @@ function Options() {
                     <label htmlFor="date">Finish Date</label>
                     <input
                       id="date"
-                      className={`${inputStyleBig} ${transition}`}
+                      className={`${inputStyleBig} ${transition} disabled:bg-primary-dark-400 disabled:text-primary-dark-100`}
                       type="date"
                       disabled={isToday}
                     />

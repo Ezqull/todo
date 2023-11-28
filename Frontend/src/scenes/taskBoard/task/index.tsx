@@ -66,21 +66,26 @@ const Task = ({ task }: Props) => {
         <div>
           {!edit ? (
             <div
-              className={`w-full h-[6%] flex flex-col gap-4 p-4 justify-start border-b-2 border-primary-dark-500`}
+              className={`w-full h-[25%] flex flex-col gap-4 p-4 justify-start border-b-2 border-primary-dark-500 mt-4`}
             >
               <div className="w-full">
                 <div className="flex flex-row justify-between h-[2rem] w-full">
-                  <div className="flex flex-row items-center justify-start gap-8 w-full">
+                  <div className="flex flex-col items-start justify-center gap-2 w-full">
                     <div>{title}</div>
-                    <div className="flex flex-row gap-3">
-                      {Array.from({ length: priority }, (_, i) => (
-                        <div
-                          key={i}
-                          className={`h-1 w-5 rounded-md ${
-                            !task.isLate ? "bg-primary-dark-500" : "bg-red-600"
-                          }`}
-                        ></div>
-                      ))}
+                    <div className="flex flex-row justify-center items-center gap-4 mb-4">
+                      <span>Priority:</span>
+                      <div className="flex flex-row gap-3">
+                        {Array.from({ length: priority }, (_, i) => (
+                          <div
+                            key={i}
+                            className={`h-1 w-5 rounded-md ${
+                              !task.isLate
+                                ? "bg-primary-dark-500"
+                                : "bg-red-600"
+                            }`}
+                          ></div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                   <div className="flex flex-row gap-4 justify-center items-center">
@@ -182,10 +187,7 @@ const Task = ({ task }: Props) => {
                       <div>{title}</div>
 
                       <div className="flex flex-row gap-4 justify-center items-center">
-                        <button
-                          onClick={() => setDone(!done)}
-                          className="w-5 h-5"
-                        >
+                        <button onClick={archive} className="w-5 h-5">
                           <ArchiveBoxIcon className="text-primary-dark-500" />
                         </button>
                         <div onClick={() => changeEdit()} className="w-4 h-4">
@@ -193,15 +195,21 @@ const Task = ({ task }: Props) => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex flex-row gap-3">
-                      {Array.from({ length: task.priority }, (_, i) => (
-                        <div
-                          key={i}
-                          className={`h-3 w-3 rounded-md ${
-                            !task.isLate ? "bg-primary-dark-500" : "bg-red-600"
-                          }`}
-                        ></div>
-                      ))}
+
+                    <div className="flex flex-col gap-2">
+                      <span>Priority:</span>
+                      <div className="flex flex-row gap-3">
+                        {Array.from({ length: task.priority }, (_, i) => (
+                          <div
+                            key={i}
+                            className={`h-3 w-3 rounded-md ${
+                              !task.isLate
+                                ? "bg-primary-dark-500"
+                                : "bg-red-600"
+                            }`}
+                          ></div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
